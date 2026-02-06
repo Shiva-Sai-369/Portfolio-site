@@ -1,5 +1,4 @@
-import React, { Suspense, useEffect } from "react";
-import Scene from "./components/Scene";
+import React, { useEffect } from "react";
 import Overlay from "./components/Overlay";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -14,16 +13,6 @@ const App: React.FC = () => {
 
   return (
     <div className="relative w-full min-h-screen bg-black overflow-x-hidden">
-      {/* 3D Scene - Fixed Background */}
-      <div
-        className="fixed inset-0 z-0"
-        style={{ position: "fixed", inset: 0, zIndex: 0 }}
-      >
-        <Suspense fallback={<LoadingScreen />}>
-          <Scene />
-        </Suspense>
-      </div>
-
       {/* HTML Content Overlay - Scrollable */}
       <div
         className="relative z-10"
@@ -35,13 +24,20 @@ const App: React.FC = () => {
       {/* Global Navigation */}
       <nav className="fixed top-0 left-0 w-full p-6 z-50 flex justify-end items-center pointer-events-none">
         <div className="hidden md:flex gap-8 pointer-events-auto">
-          {["HOME", "ABOUT", "SKILLS", "PROJECTS", "CONTACT"].map((item) => (
+          {[
+            { label: "HOME", id: "home" },
+            { label: "THE STORY", id: "about" },
+            { label: "SKILLS", id: "skills" },
+            { label: "THE GRIND", id: "coding" },
+            { label: "PROJECTS", id: "projects" },
+            { label: "SAY HELLO", id: "contact" },
+          ].map((item) => (
             <a
-              key={item}
-              href={`#${item.toLowerCase()}`}
+              key={item.id}
+              href={`#${item.id}`}
               className="text-xs font-semibold tracking-widest text-gray-400 hover:text-white transition-colors"
             >
-              {item}
+              {item.label}
             </a>
           ))}
         </div>
@@ -49,16 +45,5 @@ const App: React.FC = () => {
     </div>
   );
 };
-
-const LoadingScreen = () => (
-  <div className="fixed inset-0 flex items-center justify-center bg-black z-[100]">
-    <div className="flex flex-col items-center">
-      <div className="w-16 h-16 border-4 border-cyan-500 border-t-transparent rounded-full animate-spin"></div>
-      <p className="mt-4 text-cyan-400 font-mono tracking-widest animate-pulse">
-        INITIALIZING CORE...
-      </p>
-    </div>
-  </div>
-);
 
 export default App;

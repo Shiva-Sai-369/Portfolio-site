@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Shiva Sai Patro — Resume</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap');
+
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: #1a1a1a;
+            line-height: 1.55;
+            max-width: 850px;
+            margin: 0 auto;
+            padding: 0;
+            font-size: 12.5px;
+            background: #f5f5f5;
+        }
+
+        .page {
+            background: #fff;
+            box-shadow: 0 2px 24px rgba(0, 0, 0, 0.08);
+            padding: 0;
+            position: relative;
+        }
+
+        @media print {
+            body {
+                padding: 0;
+                font-size: 11.5px;
+                background: #fff;
+            }
+
+            .page {
+                box-shadow: none;
+            }
+
+            .no-print {
+                display: none !important;
+            }
+
+            a {
+                color: inherit;
+                text-decoration: none;
+            }
+        }
+
+        /* ─── HEADER ─── */
+        .header {
+            display: flex;
+            align-items: stretch;
+            background: #f7f7f7;
+            border-bottom: 3px solid #000;
+        }
+
+        .header-left {
+            flex: 1;
+            padding: 40px 36px 32px 42px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .header-left .first-name {
+            font-size: 18px;
+            font-weight: 900;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: #000;
+        }
+
+        .header-left .last-name {
+            font-size: 38px;
+            font-weight: 900;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            line-height: 1.1;
+            margin-top: 2px;
+        }
+
+        .header-left .title-line {
+            font-size: 13px;
+            font-weight: 400;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            color: #777;
+            margin-top: 8px;
+        }
+
+        .header-right {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 16px;
+            padding-right: 36px;
+        }
+
+        .contact-strip {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 10px;
+            padding: 20px 24px 20px 0;
+            align-items: flex-end;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 12px;
+            color: #444;
+        }
+
+        .contact-item .icon {
+            width: 26px;
+            height: 26px;
+            background: #000;
+            color: #fff;
+            border-radius: 3px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 10px;
+            flex-shrink: 0;
+        }
+
+        .header-photo {
+            width: 145px;
+            height: 145px;
+            object-fit: cover;
+            display: block;
+            border-radius: 2px;
+            flex-shrink: 0;
+        }
+
+        .contact-item a {
+            color: #444;
+            text-decoration: none;
+        }
+
+        /* ─── TWO-COLUMN LAYOUT ─── */
+        .content {
+            display: flex;
+            min-height: 700px;
+        }
+
+        .main-col {
+            flex: 1;
+            padding: 24px 28px 32px 36px;
+            border-right: 1px solid #e5e5e5;
+        }
+
+        .side-col {
+            width: 260px;
+            padding: 24px 36px 32px 24px;
+            flex-shrink: 0;
+        }
+
+        /* ─── SECTION TITLES ─── */
+        .section {
+            margin-bottom: 20px;
+        }
+
+        .section-title {
+            font-size: 14px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #000;
+            padding-bottom: 6px;
+            margin-bottom: 12px;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 2px;
+            background: #000;
+        }
+
+        /* Side column section titles */
+        .side-col .section-title {
+            font-size: 13px;
+        }
+
+        .side-col .section-title::after {
+            width: 40px;
+        }
+
+        /* ─── ENTRIES ─── */
+        .entry {
+            margin-bottom: 14px;
+        }
+
+        .entry-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            gap: 8px;
+        }
+
+        .entry-title {
+            font-weight: 700;
+            font-size: 13px;
+            color: #000;
+        }
+
+        .entry-subtitle {
+            font-weight: 500;
+            color: #555;
+            font-size: 12px;
+            margin-top: 1px;
+        }
+
+        .entry-period {
+            font-size: 11px;
+            color: #888;
+            font-weight: 500;
+            white-space: nowrap;
+        }
+
+        .entry-desc {
+            margin-top: 4px;
+            color: #444;
+            font-size: 12px;
+        }
+
+        /* ─── LISTS ─── */
+        ul {
+            padding-left: 16px;
+            margin-top: 4px;
+        }
+
+        ul li {
+            margin-bottom: 3px;
+            color: #444;
+            font-size: 12px;
+        }
+
+        ul li::marker {
+            color: #bbb;
+        }
+
+        /* ─── SKILLS (sidebar) ─── */
+        .skill-group {
+            margin-bottom: 12px;
+        }
+
+        .skill-group-title {
+            font-weight: 700;
+            font-size: 11.5px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #000;
+            margin-bottom: 4px;
+        }
+
+        .skill-list {
+            list-style: disc;
+            padding-left: 16px;
+        }
+
+        .skill-list li {
+            color: #555;
+            font-size: 11.5px;
+            margin-bottom: 2px;
+        }
+
+        .skill-list li::marker {
+            color: #ccc;
+        }
+
+        /* ─── TAGS ─── */
+        .tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin-top: 5px;
+        }
+
+        .tag {
+            background: #f0f0f0;
+            padding: 2px 8px;
+            border-radius: 3px;
+            font-size: 10px;
+            color: #555;
+            font-weight: 500;
+        }
+
+        /* ─── CP SIDEBAR ─── */
+        .cp-item {
+            margin-bottom: 8px;
+        }
+
+        .cp-platform {
+            font-weight: 700;
+            font-size: 12px;
+            color: #000;
+        }
+
+        .cp-detail {
+            font-size: 11px;
+            color: #555;
+        }
+
+        /* ─── EDUCATION SIDEBAR ─── */
+        .edu-entry {
+            margin-bottom: 12px;
+        }
+
+        .edu-title {
+            font-weight: 700;
+            font-size: 12px;
+            color: #000;
+        }
+
+        .edu-sub {
+            font-size: 11px;
+            color: #555;
+        }
+
+        .edu-period {
+            font-size: 10.5px;
+            color: #999;
+        }
+
+        /* ─── SUMMARY ─── */
+        .summary-text {
+            color: #444;
+            font-size: 12px;
+            line-height: 1.65;
+            font-style: italic;
+        }
+
+        /* ─── LANGUAGES ─── */
+        .lang-item {
+            display: flex;
+            justify-content: space-between;
+            font-size: 11.5px;
+            margin-bottom: 3px;
+        }
+
+        .lang-item .lang-name {
+            font-weight: 500;
+            color: #333;
+        }
+
+        .lang-item .lang-level {
+            color: #888;
+        }
+
+        /* ─── PRINT BUTTON ─── */
+        .print-btn {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            background: #000;
+            color: #fff;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            font-weight: 700;
+            font-size: 13px;
+            z-index: 100;
+        }
+
+        .print-btn:hover {
+            background: #333;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="page">
+
+        <!-- ═══ HEADER ═══ -->
+        <div class="header">
+            <div class="header-left">
+                <div class="first-name"></div>
+                <div class="last-name">B Shiva Sai Patro</div>
+                <div class="title-line">Software Developer</div>
+            </div>
+            <div class="header-right">
+                <div class="contact-strip">
+                    <div class="contact-item">
+                        <span>bshivasaip@gmail.com</span>
+                        <span class="icon">@</span>
+                    </div>
+                    <div class="contact-item">
+                        <a href="https://github.com/Shiva-Sai-369" target="_blank">github.com/Shiva-Sai-369</a>
+                        <span class="icon">G</span>
+                    </div>
+                    <div class="contact-item">
+                        <a href="https://www.linkedin.com/in/b-shiva-sai-patro-126aa3318/" target="_blank">LinkedIn</a>
+                        <span class="icon">in</span>
+                    </div>
+                    <div class="contact-item">
+                        <span>Hyderabad, India</span>
+                        <span class="icon">📍</span>
+                    </div>
+                </div>
+                <img src="/profile.jpeg" alt="Shiva Sai Patro" class="header-photo" />
+            </div>
+        </div>
+
+        <!-- ═══ CONTENT ═══ -->
+        <div class="content">
+
+            <!-- ─── MAIN COLUMN ─── -->
+            <div class="main-col">
+
+                <!-- Summary -->
+                <div class="section">
+                    <div class="section-title">Summary</div>
+                    <p class="summary-text">
+                        Passionate Computer Science undergraduate with strong foundations in algorithms, data
+                        structures, and
+                        full-stack development. 555+ GitHub contributions in the past year across AI-powered
+                        applications,
+                        media platforms, and campus management systems. HACK4SDG Finalist at IIT Hyderabad with a proven
+                        track record in competitive programming on LeetCode, Codeforces, and CodeChef. Driven by a
+                        vision to
+                        build impactful, production-quality software and contribute meaningfully to open-source.
+                        Currently
+                        exploring AI integration, system design, and scalable web architectures.
+                    </p>
+                </div>
+
+                <!-- Projects -->
+                <div class="section">
+                    <div class="section-title">Projects</div>
+
+                    <div class="entry">
+                        <div class="entry-header">
+                            <div class="entry-title">EduSync — AI-Powered Campus Management</div>
+                            <div class="entry-period">
+                                <a href="https://github.com/Shiva-Sai-369/edusync" target="_blank">GitHub ↗</a>
+                            </div>
+                        </div>
+                        <div class="entry-subtitle">Google TechSprint 2025</div>
+                        <ul>
+                            <li>Designed AI-based attendance system with intelligent recognition, reducing manual
+                                tracking by 90%</li>
+                            <li>Built optimized room allocation algorithm improving campus scheduling efficiency</li>
+                            <li>Developed collaborative community platform for 500+ students and faculty</li>
+                        </ul>
+                        <div class="tags">
+                            <span class="tag">TypeScript</span>
+                            <span class="tag">AI</span>
+                            <span class="tag">Full Stack</span>
+                        </div>
+                    </div>
+
+                    <div class="entry">
+                        <div class="entry-header">
+                            <div class="entry-title">Clari AI Meeting Assistant</div>
+                            <div class="entry-period">
+                                <a href="https://github.com/Shiva-Sai-369/Clari-Ai-Meeting_Assistant"
+                                    target="_blank">GitHub ↗</a>
+                            </div>
+                        </div>
+                        <div class="entry-subtitle">AI Productivity Tool</div>
+                        <ul>
+                            <li>Engineered automated meeting transcription and summarization pipeline using AI</li>
+                            <li>Implemented action item extraction and intelligent task assignment from meeting notes
+                            </li>
+                            <li>Focused on productivity enhancement through seamless AI integration</li>
+                        </ul>
+                        <div class="tags">
+                            <span class="tag">TypeScript</span>
+                            <span class="tag">AI Integration</span>
+                        </div>
+                    </div>
+
+                    <div class="entry">
+                        <div class="entry-header">
+                            <div class="entry-title">Raspiflix — Media Streaming Platform</div>
+                            <div class="entry-period">
+                                <a href="https://github.com/Shiva-Sai-369/Raspiflix" target="_blank">GitHub ↗</a>
+                            </div>
+                        </div>
+                        <div class="entry-subtitle">Embedded Entertainment System</div>
+                        <ul>
+                            <li>Built Netflix-inspired streaming UI with movie browsing, search, and carousel features
+                            </li>
+                            <li>Developed custom media player with responsive design optimized for Raspberry Pi</li>
+                            <li>Engineered for low-resource embedded hardware with smooth performance</li>
+                        </ul>
+                        <div class="tags">
+                            <span class="tag">JavaScript</span>
+                            <span class="tag">HTML</span>
+                            <span class="tag">CSS</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Competitive Programming -->
+                <div class="section">
+                    <div class="section-title">Competitive Programming</div>
+                    <ul>
+                        <li><strong>LeetCode</strong> (@Sh1vz) — 72+ problems solved (Easy: 60, Medium: 11, Hard: 1)
+                        </li>
+                        <li><strong>Codeforces</strong> (@sh1vz) — Max Rating: 795 (Newbie), 54+ problems solved
+                        </li>
+                        <li><strong>CodeChef</strong> (@shivs2006) — Max Rating: 1317 (1★), 66+ contests participated,
+                            1890+ problems solved
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Achievements -->
+                <div class="section">
+                    <div class="section-title">Achievements</div>
+                    <ul>
+                        <li><strong>HACK4SDG Finalist</strong> — IIT Hyderabad (2024). Built innovative solutions for
+                            Sustainable Development Goals.</li>
+                        <li><strong>Google TechSprint 2025</strong> — EduSync selected as AI-Powered Campus Management
+                            System for the program.</li>
+                        <li><strong>555+ GitHub Contributions</strong> — Active open-source contributor across 8+ public
+                            repositories.</li>
+                    </ul>
+                </div>
+
+            </div>
+
+            <!-- ─── SIDEBAR ─── -->
+            <div class="side-col">
+
+                <!-- Education -->
+                <div class="section">
+                    <div class="section-title">Education</div>
+
+                    <div class="edu-entry">
+                        <div class="edu-title">B.Tech in Computer Science<br>& Engineering</div>
+                        <div class="edu-sub">KL University, Hyderabad</div>
+                        <div class="edu-period">2024 — 2028</div>
+                    </div>
+
+                    <div class="edu-entry">
+                        <div class="edu-title">Intermediate (11th & 12th)</div>
+                        <div class="edu-sub">Resonance, Hyderabad</div>
+                        <div class="edu-period">2022 — 2024</div>
+                    </div>
+
+                    <div class="edu-entry">
+                        <div class="edu-title">Schooling (1st — 10th)</div>
+                        <div class="edu-sub">Kendriya Vidyalaya, Picket</div>
+                        <div class="edu-period">2012 — 2022</div>
+                    </div>
+                </div>
+
+                <!-- Skills -->
+                <div class="section">
+                    <div class="section-title">Skills</div>
+
+                    <div class="skill-group">
+                        <div class="skill-group-title">Technical</div>
+                        <ul class="skill-list">
+                            <li>C / C++ / Java / Python</li>
+                            <li>JavaScript & TypeScript</li>
+                            <li>React & Node.js</li>
+                            <li>Data Structures & Algorithms</li>
+                            <li>AI Integration</li>
+                            <li>System Design</li>
+                        </ul>
+                    </div>
+
+                    <div class="skill-group">
+                        <div class="skill-group-title">Professional</div>
+                        <ul class="skill-list">
+                            <li>Problem Solving</li>
+                            <li>Team Collaboration</li>
+                            <li>Agile Development</li>
+                            <li>Blog Writing & Content</li>
+                            <li>SEO Optimization</li>
+                            <li>Open Source Contribution</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Tools & Databases -->
+                <div class="section">
+                    <div class="section-title">Tools</div>
+                    <ul class="skill-list">
+                        <li>Git & GitHub</li>
+                        <li>MySQL / Firebase / Supabase</li>
+                        <li>Linux & VS Code</li>
+                        <li>Figma & Canva</li>
+                        <li>Tailwind CSS & WordPress</li>
+                    </ul>
+                </div>
+
+                <!-- Languages -->
+                <div class="section">
+                    <div class="section-title">Languages</div>
+                    <div class="lang-item">
+                        <span class="lang-name">English</span>
+                        <span class="lang-level">Fluent</span>
+                    </div>
+                    <div class="lang-item">
+                        <span class="lang-name">Hindi</span>
+                        <span class="lang-level">Native</span>
+                    </div>
+                    <div class="lang-item">
+                        <span class="lang-name">Telugu</span>
+                        <span class="lang-level">Native</span>
+                    </div>
+                </div>
+
+                <!-- Interests -->
+                <div class="section">
+                    <div class="section-title">Interests</div>
+                    <ul class="skill-list">
+                        <li>AI & Machine Learning</li>
+                        <li>Competitive Programming</li>
+                        <li>Open Source</li>
+                        <li>UI/UX Design</li>
+                        <li>System Architecture</li>
+                    </ul>
+                </div>
+
+            </div>
+
+        </div><!-- /content -->
+
+    </div><!-- /page -->
+
+    <button class="print-btn no-print" onclick="window.print()">🖨️ Print / Save as PDF</button>
+
+</body>
+
+</html>

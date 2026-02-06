@@ -17,174 +17,185 @@ export const COLORS = {
 export const PROJECTS: Project[] = [
   {
     id: 1,
-    title: "Skyline Studios",
-    description: "High-end 3D visual production for architectural firms.",
-    tags: ["3D Design", "Web Design"],
+    title: "Clari AI Meeting Assistant",
+    description:
+      "AI-powered meeting assistant and organizer with automated meeting summaries and action item extraction.",
+    tags: ["AI", "Development"],
     color: "#8b5cf6",
     image:
-      "https://images.unsplash.com/photo-1489515217757-5fd1be406fef?q=80&w=1200&auto=format&fit=crop",
-    github: "https://github.com/yourname/skyline-studios",
-    live: "https://skyline-studios.demo",
-    stack: ["Three.js", "React", "Vite"],
+      "https://images.unsplash.com/photo-1677442136019-21780ecad995?q=80&w=1200&auto=format&fit=crop",
+    github: "https://github.com/Shiva-Sai-369/Clari-Ai-Meeting_Assistant",
+    live: "https://github.com/Shiva-Sai-369/Clari-Ai-Meeting_Assistant",
+    stack: ["TypeScript", "AI Integration"],
   },
   {
     id: 2,
-    title: "PixelForge",
-    description: "Digital asset management and character design platform.",
-    tags: ["UI/UX", "Branding"],
+    title: "EduSync",
+    description:
+      "AI-Powered Campus Management System with intelligent attendance tracking, optimized room allocation, and collaborative community platform.",
+    tags: ["AI", "Full Stack"],
     color: "#f97316",
-    image:
-      "https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=1200&auto=format&fit=crop",
-    github: "https://github.com/yourname/pixelforge",
-    live: "https://pixelforge.demo",
-    stack: ["TypeScript", "GSAP", "Figma"],
+    image: "/edusync.png",
+    github: "https://github.com/Shiva-Sai-369/edusync",
+    live: "https://github.com/Shiva-Sai-369/edusync",
+    stack: ["TypeScript", "AI"],
   },
   {
     id: 3,
-    title: "Vivid Dreams",
-    description: "Immersive VR experience for artistic storytelling.",
-    tags: ["Development", "Motion"],
-    color: "#ffffff",
-    image:
-      "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?q=80&w=1200&auto=format&fit=crop",
-    github: "https://github.com/yourname/vivid-dreams",
-    live: "https://vivid-dreams.demo",
-    stack: ["WebXR", "Three.js", "GSAP"],
+    title: "Raspiflix",
+    description:
+      "Netflix-style media streaming platform for Raspberry Pi with movie browsing, favorites management, and custom media player.",
+    tags: ["Development", "UI/UX"],
+    color: "#e50914",
+    image: "/raspiflix.png",
+    github: "https://github.com/Shiva-Sai-369/Raspiflix",
+    live: "https://github.com/Shiva-Sai-369/Raspiflix",
+    stack: ["JavaScript", "HTML", "CSS"],
   },
 ];
 
 export const SERVICES = [
   {
     id: "01",
-    title: "3D MODELING",
-    desc: "Detailed 3D models of characters, objects, and environments tailored for your specific needs.",
+    title: "WEB DEVELOPMENT",
+    desc: "Building modern, responsive web applications with React, TypeScript, and cutting-edge frameworks.",
   },
   {
     id: "02",
-    title: "3D RENDERING",
-    desc: "High-quality photorealistic renders that showcase your designs with realistic lighting and textures.",
+    title: "AI INTEGRATION",
+    desc: "Developing AI-powered solutions for productivity, automation, and intelligent campus management.",
   },
   {
     id: "03",
-    title: "3D ANIMATION",
-    desc: "Dynamic animations that bring your characters and environments to life for marketing and gaming.",
+    title: "UI/UX DESIGN",
+    desc: "Crafting intuitive and visually appealing user interfaces with a focus on user experience.",
   },
   {
     id: "04",
-    title: "PRODUCT DESIGN",
-    desc: "Custom 3D product modeling and rendering for prototyping or showcasing your products.",
+    title: "PROBLEM SOLVING",
+    desc: "Strong DSA fundamentals applied to competitive programming and efficient software solutions.",
   },
 ];
 
 export const TESTIMONIALS = [
   {
-    name: "John Doe",
-    role: "Creative Director",
-    text: "Alex's 3D designs transformed our brand identity. The attention to detail is truly world-class.",
+    name: "HACK4SDG",
+    role: "IIT Hyderabad",
+    text: "Finalist — Demonstrated innovative problem-solving skills in building solutions for Sustainable Development Goals.",
   },
   {
-    name: "Sarah Smith",
-    role: "Tech Lead",
-    text: "The most talented WebGL developer I've worked with. Performance and aesthetics are perfectly balanced.",
+    name: "Google TechSprint 2025",
+    role: "EduSync Project",
+    text: "Built an AI-Powered Campus Management System that impressed judges with intelligent attendance tracking and room allocation.",
   },
   {
-    name: "Michael Chen",
-    role: "Founder",
-    text: "Incredible vision and execution. The 3D interactions on our site are a huge hit with customers.",
+    name: "Open Source",
+    role: "Community Contributor",
+    text: "Actively contributing to open-source projects and building impactful tools for the developer community.",
   },
 ];
 
 export const SKILLS: Skill[] = [
-  { name: "Blender", level: 95, icon: "cube" },
-  { name: "Three.js", level: 90, icon: "code" },
-  { name: "Webflow", level: 85, icon: "shield" },
-  { name: "Figma", level: 90, icon: "zap" },
+  { name: "C/C++", level: 90, icon: "code" },
+  { name: "JavaScript", level: 88, icon: "braces" },
+  { name: "TypeScript", level: 85, icon: "shield" },
+  { name: "Python", level: 82, icon: "zap" },
 ];
 
 export const SKILL_CATEGORIES: SkillCategory[] = [
   {
-    title: "Frontend",
+    title: "Programming Languages",
     skills: [
-      { name: "React", level: 92, icon: "code" },
-      { name: "TypeScript", level: 90, icon: "braces" },
-      { name: "GSAP", level: 85, icon: "spark" },
+      { name: "C/C++", level: 90, icon: "code" },
+      { name: "Java", level: 85, icon: "braces" },
+      { name: "Python", level: 82, icon: "spark" },
+      { name: "Go", level: 70, icon: "cpu" },
     ],
   },
   {
-    title: "3D & Motion",
+    title: "Web Development",
     skills: [
-      { name: "Three.js", level: 90, icon: "cube" },
-      { name: "Blender", level: 88, icon: "box" },
-      { name: "WebXR", level: 78, icon: "vr" },
+      { name: "JavaScript", level: 88, icon: "code" },
+      { name: "TypeScript", level: 85, icon: "braces" },
+      { name: "HTML/CSS", level: 90, icon: "layout" },
+      { name: "WordPress", level: 75, icon: "pen" },
     ],
   },
   {
-    title: "Design & Tools",
+    title: "Design & Content",
     skills: [
-      { name: "Figma", level: 90, icon: "pen" },
-      { name: "Webflow", level: 82, icon: "layout" },
-      { name: "Notion", level: 75, icon: "note" },
+      { name: "Graphic Design", level: 78, icon: "pen" },
+      { name: "SEO", level: 72, icon: "shield" },
+      { name: "Content Writing", level: 75, icon: "note" },
     ],
   },
   {
-    title: "Backend & DevOps",
+    title: "Databases & Tools",
     skills: [
-      { name: "Node.js", level: 80, icon: "cpu" },
-      { name: "PostgreSQL", level: 72, icon: "database" },
-      { name: "Vercel", level: 84, icon: "cloud" },
+      { name: "MySQL", level: 80, icon: "database" },
+      { name: "Supabase", level: 78, icon: "cloud" },
+      { name: "Firebase", level: 76, icon: "cloud" },
+      { name: "Git", level: 88, icon: "code" },
     ],
   },
 ];
 
 export const EXPERIENCE: ExperienceItem[] = [
   {
-    role: "Senior 3D Designer",
-    company: "Nexus Studio",
-    period: "2023 — Present",
+    role: "CSE Undergraduate",
+    company: "B.Tech — Computer Science & Engineering",
+    period: "2024 — 2028",
     summary:
-      "Leading the 3D pipeline for immersive product showcases and WebGL experiences.",
+      "Pursuing B.Tech in CSE, building projects, competing in hackathons, and exploring AI & full-stack development.",
     highlights: [
-      "Built reusable shader kits for rapid prototyping",
-      "Optimized scenes to 60 FPS on mid-tier devices",
+      "Built Clari AI Meeting Assistant & EduSync",
+      "Google TechSprint 2025 & HACK4SDG Finalist at IIT Hyderabad",
+      "Active open-source contributor on GitHub",
     ],
   },
   {
-    role: "Creative Technologist",
-    company: "Orbit Labs",
-    period: "2021 — 2023",
-    summary: "Partnered with design teams to ship interactive brand campaigns.",
+    role: "Competitive Programmer",
+    company: "LeetCode / Codeforces / CodeChef",
+    period: "2024 — Present",
+    summary:
+      "Active competitive programmer focused on DSA and problem solving.",
     highlights: [
-      "Launched 12+ interactive microsites",
-      "Implemented scroll-driven 3D storytelling",
+      "Solving problems across multiple platforms",
+      "Strong focus on algorithms and data structures",
     ],
   },
   {
-    role: "3D Artist",
-    company: "Freelance",
-    period: "2019 — 2021",
-    summary: "Produced character assets and cinematic renders for startups.",
+    role: "Hackathon Finalist",
+    company: "HACK4SDG — IIT Hyderabad",
+    period: "2024",
+    summary:
+      "Competed as a finalist building solutions for Sustainable Development Goals.",
     highlights: [
-      "Delivered 30+ client projects",
-      "Built modular asset libraries",
+      "Developed innovative solutions under time constraints",
+      "Collaborated in a high-pressure team environment",
     ],
   },
 ];
 
 export const EDUCATION: EducationItem[] = [
   {
-    institution: "School of Digital Arts",
-    program: "B.A. in Interaction Design",
-    period: "2015 — 2019",
+    institution: "KL University, Aziz Nagar, Hyderabad",
+    program: "B.Tech in Computer Science & Engineering",
+    period: "2024 — 2028",
   },
   {
-    institution: "Motion Lab",
-    program: "Advanced 3D Visualization Program",
-    period: "2019",
+    institution: "Resonance, West Maredpally, Hyderabad",
+    program: "Intermediate (11th & 12th)",
+    period: "2022 — 2024",
+  },
+  {
+    institution: "Kendriya Vidyalaya, Picket",
+    program: "Schooling (1st — 10th)",
+    period: "2012 — 2022",
   },
 ];
 
 export const CERTIFICATIONS: CertificationItem[] = [
-  { name: "Three.js Journey", issuer: "Bruno Simon", year: "2022" },
-  { name: "Google UX Design", issuer: "Coursera", year: "2021" },
-  { name: "WebGL Fundamentals", issuer: "Udacity", year: "2020" },
+  { name: "HACK4SDG Finalist", issuer: "IIT Hyderabad", year: "2024" },
+  { name: "Google TechSprint 2025", issuer: "Google", year: "2025" },
 ];
