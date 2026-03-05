@@ -6,6 +6,8 @@ export interface Project {
   tags: string[];
   color: string;
   image: string;
+  images: string[];
+  client: string;
   github: string;
   live: string;
   stack: string[];

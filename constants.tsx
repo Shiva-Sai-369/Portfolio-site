@@ -18,12 +18,19 @@ export const PROJECTS: Project[] = [
   {
     id: 1,
     title: "Clari AI Meeting Assistant",
+    client: "Clari AI",
     description:
       "AI-powered meeting assistant and organizer with automated meeting summaries and action item extraction.",
     tags: ["AI", "Development"],
     color: "#8b5cf6",
     image:
       "https://images.unsplash.com/photo-1677442136019-21780ecad995?q=80&w=1200&auto=format&fit=crop",
+    images: [
+      "https://images.unsplash.com/photo-1677442136019-21780ecad995?q=80&w=600&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?q=80&w=600&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1531746790095-e5a3e5a18b9b?q=80&w=600&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1535378917042-10a22c95931a?q=80&w=600&auto=format&fit=crop",
+    ],
     github: "https://github.com/Shiva-Sai-369/Clari-Ai-Meeting_Assistant",
     live: "https://github.com/Shiva-Sai-369/Clari-Ai-Meeting_Assistant",
     stack: ["TypeScript", "AI Integration"],
@@ -31,11 +38,13 @@ export const PROJECTS: Project[] = [
   {
     id: 2,
     title: "EduSync",
+    client: "EduSync",
     description:
       "AI-Powered Campus Management System with intelligent attendance tracking, optimized room allocation, and collaborative community platform.",
     tags: ["AI", "Full Stack"],
     color: "#f97316",
-    image: "/edusync.png",
+    image: "/Edusync.png",
+    images: ["/Edusync.png"],
     github: "https://github.com/Shiva-Sai-369/edusync",
     live: "https://github.com/Shiva-Sai-369/edusync",
     stack: ["TypeScript", "AI"],
@@ -43,11 +52,13 @@ export const PROJECTS: Project[] = [
   {
     id: 3,
     title: "Raspiflix",
+    client: "Raspiflix",
     description:
       "Netflix-style media streaming platform for Raspberry Pi with movie browsing, favorites management, and custom media player.",
     tags: ["Development", "UI/UX"],
     color: "#e50914",
     image: "/raspiflix.png",
+    images: ["/raspiflix.png"],
     github: "https://github.com/Shiva-Sai-369/Raspiflix",
     live: "https://github.com/Shiva-Sai-369/Raspiflix",
     stack: ["JavaScript", "HTML", "CSS"],

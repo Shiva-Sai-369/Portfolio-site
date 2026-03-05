@@ -12,7 +12,7 @@ const App: React.FC = () => {
   }, []);
 
   return (
-    <div className="relative w-full min-h-screen bg-black overflow-x-hidden">
+    <div className="relative w-full min-h-screen bg-black overflow-x-clip">
       {/* HTML Content Overlay - Scrollable */}
       <div
         className="relative z-10"

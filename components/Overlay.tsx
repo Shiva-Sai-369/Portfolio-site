@@ -2,8 +2,8 @@ import React, { useLayoutEffect, useMemo, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import TextureRevealText from "./TextureRevealText";
+import ProjectsStack from "./ProjectsStack";
 import {
-  PROJECTS,
   SKILLS,
   SKILL_CATEGORIES,
   EXPERIENCE,
@@ -60,7 +60,6 @@ const Overlay: React.FC = () => {
   const heroTextRef = useRef<HTMLDivElement>(null);
   const aboutRef = useRef<HTMLElement>(null);
   const carouselRef = useRef<HTMLDivElement>(null);
-  const [filter, setFilter] = useState("All");
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -72,16 +71,6 @@ const Overlay: React.FC = () => {
     message: "",
   });
   const [formSuccess, setFormSuccess] = useState("");
-
-  const filters = useMemo(() => {
-    const tags = PROJECTS.flatMap((project) => project.tags);
-    return ["All", ...Array.from(new Set(tags))];
-  }, []);
-
-  const filteredProjects = useMemo(() => {
-    if (filter === "All") return PROJECTS;
-    return PROJECTS.filter((project) => project.tags.includes(filter));
-  }, [filter]);
 
   useLayoutEffect(() => {
     const ctx = gsap.context(() => {
@@ -886,84 +875,8 @@ const Overlay: React.FC = () => {
         </div>
       </section>
 
-      {/* 3. PROJECTS SECTION */}
-      <section
-        id="projects"
-        className="min-h-screen bg-black px-6 md:px-24 py-32"
-      >
-        <div className="reveal mb-12 flex flex-col md:flex-row md:items-end md:justify-between gap-6">
-          <div>
-            <h2 className="text-6xl md:text-8xl font-black tracking-tighter">
-              PROJECTS
-            </h2>
-            <p className="text-gray-500 font-mono mt-4">
-              /Things I've built &amp; shipped
-            </p>
-          </div>
-          <div className="flex flex-wrap gap-3">
-            {filters.map((tag) => (
-              <button
-                key={tag}
-                onClick={() => setFilter(tag)}
-                className={`px-4 py-2 rounded-full border text-xs uppercase tracking-[0.2em] transition ${
-                  filter === tag
-                    ? "bg-white text-black border-white"
-                    : "border-white/20 text-gray-300 hover:border-white/60"
-                }`}
-              >
-                {tag}
-              </button>
-            ))}
-          </div>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
-          {filteredProjects.map((project) => (
-            <article
-              key={project.id}
-              className="reveal group bg-[#0a0a0a] rounded-[2rem] overflow-hidden border border-white/10 hover:border-white/30 transition-all"
-            >
-              <div className="p-6 flex flex-col gap-4">
-                <div className="flex items-center justify-between">
-                  <h3 className="text-2xl font-black tracking-tight">
-                    {project.title}
-                  </h3>
-                  <span className="text-xs uppercase tracking-[0.3em] text-gray-500">
-                    #{project.id}
-                  </span>
-                </div>
-                <p className="text-gray-400 text-sm leading-relaxed">
-                  {project.description}
-                </p>
-                <div className="flex flex-wrap gap-2">
-                  {project.stack.map((tech) => (
-                    <span
-                      key={tech}
-                      className="px-3 py-1 rounded-full bg-white/5 border border-white/10 text-xs uppercase tracking-[0.2em]"
-                    >
-                      {tech}
-                    </span>
-                  ))}
-                </div>
-                <div className="flex gap-3 pt-2">
-                  <a
-                    href={project.github}
-                    className="flex items-center gap-2 px-4 py-2 rounded-full border border-white/10 text-xs uppercase tracking-[0.2em] hover:bg-white hover:text-black transition"
-                  >
-                    <Github size={14} /> GitHub
-                  </a>
-                  <a
-                    href={project.live}
-                    className="flex items-center gap-2 px-4 py-2 rounded-full border border-white/10 text-xs uppercase tracking-[0.2em] hover:bg-white hover:text-black transition"
-                  >
-                    <ExternalLink size={14} /> Live
-                  </a>
-                </div>
-              </div>
-            </article>
-          ))}
-        </div>
-      </section>
+      {/* 3. PROJECTS SECTION — Stacking Cards */}
+      <ProjectsStack />
 
       {/* 5. CONTACT SECTION */}
       <section
