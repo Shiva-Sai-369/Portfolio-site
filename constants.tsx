@@ -23,14 +23,8 @@ export const PROJECTS: Project[] = [
       "AI-powered meeting assistant and organizer with automated meeting summaries and action item extraction.",
     tags: ["AI", "Development"],
     color: "#8b5cf6",
-    image:
-      "https://images.unsplash.com/photo-1677442136019-21780ecad995?q=80&w=1200&auto=format&fit=crop",
-    images: [
-      "https://images.unsplash.com/photo-1677442136019-21780ecad995?q=80&w=600&auto=format&fit=crop",
-      "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?q=80&w=600&auto=format&fit=crop",
-      "https://images.unsplash.com/photo-1531746790095-e5a3e5a18b9b?q=80&w=600&auto=format&fit=crop",
-      "https://images.unsplash.com/photo-1535378917042-10a22c95931a?q=80&w=600&auto=format&fit=crop",
-    ],
+    image: "/Clari Landing page.png",
+    images: ["/Clari Landing page.png"],
     github: "https://github.com/Shiva-Sai-369/Clari-Ai-Meeting_Assistant",
     live: "https://github.com/Shiva-Sai-369/Clari-Ai-Meeting_Assistant",
     stack: ["TypeScript", "AI Integration"],
