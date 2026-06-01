@@ -3,6 +3,7 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import TextureRevealText from "./TextureRevealText";
 import ProjectsStack from "./ProjectsStack";
+import { CrowdCanvas } from "./CrowdCanvas";
 import {
   SKILLS,
   SKILL_CATEGORIES,
@@ -881,9 +882,9 @@ const Overlay: React.FC = () => {
       {/* 5. CONTACT SECTION */}
       <section
         id="contact"
-        className="min-h-screen bg-white text-black px-6 md:px-24 py-32 flex flex-col items-center justify-center text-center"
+        className="relative overflow-hidden min-h-screen bg-white text-black px-6 md:px-24 pt-32 pb-[420px] flex flex-col items-center justify-center text-center z-0"
       >
-        <div className="reveal w-full max-w-4xl">
+        <div className="reveal w-full max-w-4xl relative z-10">
           <h2 className="text-6xl md:text-9xl font-black tracking-tighter leading-none mb-12">
             SAY HELLO
           </h2>
@@ -965,6 +966,7 @@ const Overlay: React.FC = () => {
             </a>
           </div>
         </div>
+        <CrowdCanvas src="/images/peeps/all-peeps.png" rows={15} cols={7} />
       </section>
 
       {/* 6. FOOTER */}
