@@ -111,6 +111,7 @@ const ProjectsStack: React.FC = () => {
                 </div>
 
                 {/* Live Project button */}
+                {project.live && (
                 <a
                   href={project.live}
                   target="_blank"
@@ -132,6 +133,7 @@ const ProjectsStack: React.FC = () => {
                   Live Project
                   <ExternalLink size={12} />
                 </a>
+                )}
               </div>
 
               {/* ── Content: Image + Description ── */}
@@ -139,12 +141,28 @@ const ProjectsStack: React.FC = () => {
                 <div className="flex flex-col md:flex-row gap-5">
                   {/* Project Screenshot */}
                   <div className="relative rounded-2xl overflow-hidden border border-white/10 md:w-3/5 shrink-0">
-                    <img
-                      src={project.image}
-                      alt={project.title}
-                      className="w-full h-full object-cover object-top"
-                      loading="lazy"
-                    />
+                    {project.image ? (
+                      <img
+                        src={project.image}
+                        alt={project.title}
+                        className="w-full h-full object-cover object-top"
+                        loading="lazy"
+                      />
+                    ) : (
+                      <div
+                        className="w-full h-full min-h-56 flex items-center justify-center p-8"
+                        style={{
+                          background: `radial-gradient(circle at 30% 20%, ${project.color}33, transparent 60%), #111`,
+                        }}
+                      >
+                        <span
+                          className="text-3xl md:text-5xl font-black tracking-tighter text-center"
+                          style={{ color: project.color }}
+                        >
+                          {project.title}
+                        </span>
+                      </div>
+                    )}
                   </div>
 
                   {/* Description + Tags */}

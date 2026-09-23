@@ -5,11 +5,11 @@ export interface Project {
   description: string;
   tags: string[];
   color: string;
-  image: string;
+  image?: string;
   images: string[];
   client: string;
   github: string;
-  live: string;
+  live?: string;
   stack: string[];
 }
 
