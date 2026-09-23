@@ -405,9 +405,11 @@ const Overlay: React.FC = () => {
                     <p className="text-sm text-gray-500 font-mono mb-4">
                       {item.company}
                     </p>
-                    <p className="text-gray-300 text-sm leading-relaxed mb-5">
-                      {item.summary}
-                    </p>
+                    {item.summary && (
+                      <p className="text-gray-300 text-sm leading-relaxed mb-5">
+                        {item.summary}
+                      </p>
+                    )}
                     <ul className="space-y-2.5">
                       {item.highlights.map((highlight) => (
                         <li
@@ -725,24 +727,32 @@ const Overlay: React.FC = () => {
                     Problems Solved
                   </span>
                   <span className="text-4xl font-black text-yellow-500">
-                    500+
+                    214
                   </span>
                 </div>
-                <div className="w-full h-2 bg-white/10 rounded-full overflow-hidden">
-                  <div
-                    className="h-full bg-gradient-to-r from-yellow-500 to-orange-500 rounded-full"
-                    style={{ width: "70%" }}
-                  />
+                {/* Difficulty split of solved problems */}
+                <div className="w-full h-2 bg-white/10 rounded-full overflow-hidden flex">
+                  <div className="h-full bg-green-500" style={{ width: "72.9%" }} />
+                  <div className="h-full bg-yellow-500" style={{ width: "24.8%" }} />
+                  <div className="h-full bg-red-500" style={{ width: "2.3%" }} />
                 </div>
-                <div className="flex gap-3 text-sm text-gray-500">
+                <div className="flex flex-wrap gap-3 text-sm text-gray-500">
                   <span className="px-3 py-1.5 rounded-lg bg-green-500/10 text-green-400">
-                    Easy: 180
+                    Easy: 156
                   </span>
                   <span className="px-3 py-1.5 rounded-lg bg-yellow-500/10 text-yellow-400">
-                    Med: 250
+                    Med: 53
                   </span>
                   <span className="px-3 py-1.5 rounded-lg bg-red-500/10 text-red-400">
-                    Hard: 70
+                    Hard: 5
+                  </span>
+                </div>
+                <div className="flex flex-wrap gap-3 text-sm">
+                  <span className="px-3 py-1.5 rounded-lg bg-white/5 text-gray-400">
+                    Contest: 1501
+                  </span>
+                  <span className="px-3 py-1.5 rounded-lg bg-white/5 text-gray-400">
+                    Top 44.28%
                   </span>
                 </div>
               </div>
@@ -776,23 +786,24 @@ const Overlay: React.FC = () => {
               </div>
               <div className="space-y-5">
                 <div className="flex justify-between items-baseline">
-                  <span className="text-gray-400 text-base">Max Rating</span>
+                  <span className="text-gray-400 text-base">Rating</span>
                   <span className="text-4xl font-black text-blue-500">
-                    1600
+                    1006
                   </span>
                 </div>
+                {/* Progress toward Pupil (1200) */}
                 <div className="w-full h-2 bg-white/10 rounded-full overflow-hidden">
                   <div
                     className="h-full bg-gradient-to-r from-blue-500 to-cyan-400 rounded-full"
-                    style={{ width: "55%" }}
+                    style={{ width: "84%" }}
                   />
                 </div>
-                <div className="flex gap-3 text-sm text-gray-500">
+                <div className="flex flex-wrap gap-3 text-sm text-gray-500">
                   <span className="px-3 py-1.5 rounded-lg bg-blue-500/10 text-blue-400">
-                    Expert
+                    Newbie
                   </span>
                   <span className="px-3 py-1.5 rounded-lg bg-white/5 text-gray-400">
-                    500+ contests
+                    90 solved
                   </span>
                 </div>
               </div>
@@ -828,21 +839,22 @@ const Overlay: React.FC = () => {
                 <div className="flex justify-between items-baseline">
                   <span className="text-gray-400 text-base">Max Rating</span>
                   <span className="text-4xl font-black text-amber-500">
-                    1800
+                    1427
                   </span>
                 </div>
+                {/* Progress through the 2★ band (1400–1599) */}
                 <div className="w-full h-2 bg-white/10 rounded-full overflow-hidden">
                   <div
                     className="h-full bg-gradient-to-r from-amber-600 to-yellow-400 rounded-full"
-                    style={{ width: "60%" }}
+                    style={{ width: "14%" }}
                   />
                 </div>
-                <div className="flex gap-3 text-sm text-gray-500">
+                <div className="flex flex-wrap gap-3 text-sm text-gray-500">
                   <span className="px-3 py-1.5 rounded-lg bg-amber-500/10 text-amber-400">
-                    4★
+                    2★
                   </span>
                   <span className="px-3 py-1.5 rounded-lg bg-white/5 text-gray-400">
-                    200+ contests
+                    2500+ solved
                   </span>
                 </div>
               </div>

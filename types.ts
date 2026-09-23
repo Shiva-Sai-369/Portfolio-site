@@ -28,7 +28,7 @@ export interface ExperienceItem {
   role: string;
   company: string;
   period: string;
-  summary: string;
+  summary?: string;
   highlights: string[];
 }
 

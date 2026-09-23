@@ -36,7 +36,8 @@ export const PROJECTS: Project[] = [
       "Lead management and project tracking CRM with role-based access for admins, team members, and clients, plus live Google Sheets lead sync.",
     tags: ["Full Stack", "SaaS"],
     color: "#22c55e",
-    images: [],
+    image: "/CRM.png",
+    images: ["/CRM.png"],
     github: "https://github.com/Shiva-Sai-369/CRM",
     stack: ["Next.js", "TypeScript", "Supabase", "PostgreSQL", "Zustand", "Tailwind CSS"],
   },
@@ -57,12 +58,13 @@ export const PROJECTS: Project[] = [
   {
     id: 4,
     title: "Ramirez",
-    client: "Team Project",
+    client: "Ramirez",
     description:
       "Real-time multi-agent cybersecurity defense system: 10 monitoring agents detecting network attacks, port scans, kernel threats, and anomalies.",
     tags: ["Security", "ML"],
     color: "#06b6d4",
-    images: [],
+    image: "/Ramirez.jpeg",
+    images: ["/Ramirez.jpeg"],
     github: "https://github.com/Shiva-Sai-369/ramirez",
     stack: ["Python", "Scapy", "Machine Learning", "C"],
   },
@@ -169,37 +171,44 @@ export const SKILL_CATEGORIES: SkillCategory[] = [
 
 export const EXPERIENCE: ExperienceItem[] = [
   {
-    role: "CSE Undergraduate",
-    company: "B.Tech — Computer Science & Engineering",
-    period: "2024 — 2028",
+    role: "Growth & User Operations",
+    company: "Niera · Full-time · Hyderabad (Remote)",
+    period: "Sep 2026 — Present",
     summary:
-      "Pursuing B.Tech in CSE, building projects, competing in hackathons, and exploring AI & full-stack development.",
+      "Driving user growth and day-to-day user operations for Niera's exam-prep platform.",
+    highlights: [],
+  },
+  {
+    role: "Product Development & AI Intern",
+    company: "Web Rocket Tech · Internship · Hyderabad (On-site)",
+    period: "Jun 2026 — Sep 2026 · 4 mos",
     highlights: [
-      "Built Clari AI Meeting Assistant & EduSync",
-      "Google TechSprint 2025 & HACK4SDG Finalist at IIT Hyderabad",
-      "Active open-source contributor on GitHub",
+      "Designed and developed high-fidelity, conversion-focused landing pages with brand consistency",
+      "Built and shipped internal/product tools",
+      "Assisted in product research, requirement gathering, and QA testing",
+      "Translated design concepts into functional, responsive interfaces",
     ],
   },
   {
-    role: "Competitive Programmer",
-    company: "LeetCode / Codeforces / CodeChef",
-    period: "2024 — Present",
-    summary:
-      "Active competitive programmer focused on DSA and problem solving.",
+    role: "Graphic Designer",
+    company: "Aiforkids · Full-time · Secunderabad",
+    period: "Jun 2024 — Jul 2026 · 2 yrs 2 mos",
     highlights: [
-      "Solving problems across multiple platforms",
-      "Strong focus on algorithms and data structures",
+      "Designed visual content (thumbnails, illustrations, social graphics) for a young audience",
+      "Maintained consistent visual identity across brand touchpoints",
+      "Delivered multiple design assets per week under tight turnaround",
+      "Adapted designs based on feedback cycles with content teams",
     ],
   },
   {
-    role: "Hackathon Finalist",
-    company: "HACK4SDG — IIT Hyderabad",
-    period: "2024",
-    summary:
-      "Competed as a finalist building solutions for Sustainable Development Goals.",
+    role: "Web Content Writer",
+    company: "WieDigital · Hybrid",
+    period: "May 2025 — Jul 2025 · 3 mos",
     highlights: [
-      "Developed innovative solutions under time constraints",
-      "Collaborated in a high-pressure team environment",
+      "Produced SEO-optimized web content, improving organic search visibility",
+      "Managed and published content on WordPress across multiple client projects",
+      "Applied on-page SEO techniques (meta tags, keyword placement, internal linking)",
+      "Collaborated with design/marketing teams on campaign-aligned content",
     ],
   },
 ];
