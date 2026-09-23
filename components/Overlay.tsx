@@ -4,12 +4,11 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import TextureRevealText from "./TextureRevealText";
 import ProjectsStack from "./ProjectsStack";
 import { CrowdCanvas } from "./CrowdCanvas";
+import type { Tone } from "./ToneContext";
 import {
   SKILLS,
   SKILL_CATEGORIES,
   EXPERIENCE,
-  EDUCATION,
-  CERTIFICATIONS,
 } from "../constants";
 import {
   ArrowRight,
@@ -18,8 +17,6 @@ import {
   Mail,
   ChevronDown,
   ExternalLink,
-  ChevronLeft,
-  ChevronRight,
   Code,
   Braces,
   Cpu,
@@ -35,7 +32,6 @@ import {
   Headset,
   StickyNote,
   MapPin,
-  CheckCircle,
 } from "lucide-react";
 
 const iconMap: Record<string, React.ElementType> = {
@@ -55,12 +51,212 @@ const iconMap: Record<string, React.ElementType> = {
   cloud: Cloud,
 };
 
+const heroCopy: Record<Tone, { headline: string[]; sub: string }> = {
+  formal: {
+    headline: ["Code by day.", "Design by night.", "Student always."],
+    sub: "Full-stack developer and product designer, currently a CS student at KL University.",
+  },
+  casual: {
+    headline: ["Codes by day.", "Panics by night.", "Sleep? Optional."],
+    sub: "Powered by caffeine, deadlines, and mild delusion. Somehow it keeps working.",
+  },
+};
+
+/**
+ * Hero text block. Renders BOTH tones stacked in one grid so the block always
+ * has the same height, then hides the one that isn't `show`. That keeps the
+ * formal layer and the casual reveal layer pixel-aligned.
+ * `black` renders every glyph black (used inside the hover circle).
+ */
+const HeroText: React.FC<{ show: Tone; black?: boolean }> = ({
+  show,
+  black,
+}) => (
+  <>
+    <p
+      className={`text-xs md:text-sm font-semibold uppercase tracking-[0.5em] mb-6 ${
+        black ? "text-black" : "text-[#e8dcc8]"
+      }`}
+    >
+      Shiva Sai Patro
+    </p>
+    <div className="grid">
+      {(["formal", "casual"] as const).map((t) => (
+        <div
+          key={t}
+          aria-hidden={t !== show || black}
+          className={`[grid-area:1/1] ${t === show ? "" : "invisible"}`}
+        >
+          <h1
+            data-cursor-spotlight
+            className="w-fit font-black uppercase tracking-tighter leading-[0.85] text-6xl md:text-8xl lg:text-[9rem]"
+          >
+            {heroCopy[t].headline.map((line, i) => (
+              <span
+                key={i}
+                className={`block ${
+                  black
+                    ? "text-black"
+                    : i === 1
+                      ? "text-[#ff5a1f]"
+                      : "text-[#e8dcc8]"
+                }`}
+              >
+                {line}
+              </span>
+            ))}
+          </h1>
+          <p
+            className={`mt-8 max-w-xl text-base md:text-lg leading-relaxed ${
+              black ? "text-black" : "text-[#e8dcc8]/70"
+            }`}
+          >
+            {heroCopy[t].sub}
+          </p>
+        </div>
+      ))}
+    </div>
+  </>
+);
+
+const MONTHS = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+
+/** "Sep 2026 — Present" -> Date of the start month, for newest-first ordering. */
+const startDate = (period: string) => {
+  const [mon, year] = period.trim().split(/\s+/);
+  return new Date(Number(year), Math.max(0, MONTHS.indexOf(mon))).getTime();
+};
+
+/** Start month + year for display; September reads "Sept" as requested. */
+const startLabel = (period: string) =>
+  period.trim().split(/\s+/).slice(0, 2).join(" ").replace(/^Sep/, "Sept");
+
+type Part = string | [string]; // [text] = orange highlight
+
+const aboutCopy: Record<"formal" | "casual", Part[]> = {
+  formal: [
+    "I'm a ",
+    ["Computer Science"],
+    " student who builds efficient solutions & masters algorithms. HACK4SDG ",
+    ["finalist"],
+    " (IIT Hyderabad), Google TechSprint 2025 participant, always learning through projects, contests & experiments.",
+  ],
+  casual: [
+    "I'm a ",
+    ["professional"],
+    " overthinker who solves problems I created myself. Somewhere between the bugs & the caffeine, ",
+    ["stuff"],
+    " ships & people actually like it. Let's build something!",
+  ],
+};
+
+const experienceCopy: Record<"formal" | "casual", Part[]> = {
+  formal: [
+    "Over ",
+    ["two years"],
+    " of experience in design, content and product development, working with growing teams on real products that people actually use.",
+  ],
+  casual: [
+    ["Two years"],
+    " of making things pretty, writing words nobody asked for & breaking stuff in production. Somehow people still ",
+    ["hire me"],
+    ".",
+  ],
+};
+
+/**
+ * Big headline. Normal copy is cream + orange highlights; `black` is the copy
+ * inside the hover disc. With `lit`, every character starts light grey
+ * (`.lit-char`) and Overlay's ScrollTrigger tweens it to cream on scroll
+ * (orange highlights stay orange).
+ */
+const Headline: React.FC<{
+  parts: Part[];
+  black?: boolean;
+  lit?: boolean;
+  label?: string;
+}> = ({ parts, black, lit, label }) => (
+  <h2
+    {...(black ? {} : { "data-cursor-spotlight": true })}
+    aria-label={label}
+    className={`text-4xl md:text-6xl lg:text-7xl font-bold tracking-tighter leading-[1.05] ${
+      black ? "text-black" : "text-[#e8dcc8]"
+    }`}
+  >
+    {parts.map((part, i) =>
+      typeof part !== "string" ? (
+        <span key={i} className={black ? "" : "text-[#ff5a1f]"}>
+          {part[0]}
+        </span>
+      ) : lit ? (
+        <span key={i} aria-hidden="true">
+          {part.split(/(\s+)/).map((word, j) =>
+            /^\s+$/.test(word) ? (
+              " "
+            ) : (
+              <span key={j} className="inline-block whitespace-nowrap">
+                {word.split("").map((ch, k) => (
+                  <span
+                    key={k}
+                    className="lit-char"
+                    style={{ color: "rgba(232,220,200,0.22)" }}
+                  >
+                    {ch}
+                  </span>
+                ))}
+              </span>
+            ),
+          )}
+        </span>
+      ) : (
+        <React.Fragment key={i}>{part}</React.Fragment>
+      ),
+    )}
+  </h2>
+);
+
+const plain = (parts: Part[]) =>
+  parts.map((p) => (typeof p === "string" ? p : p[0])).join("");
+
+/** Section label + headline, plus the orange hover disc showing the casual copy. */
+const RevealBlock: React.FC<{
+  label: string;
+  copy: Record<"formal" | "casual", Part[]>;
+  className?: string;
+}> = ({ label, copy, className = "" }) => (
+  <div className={`relative ${className}`}>
+    <div className="lit-text py-16">
+      <p className="text-xs md:text-sm font-semibold uppercase tracking-[0.5em] mb-8 text-[#e8dcc8]">
+        {label}
+      </p>
+      <Headline parts={copy.formal} lit label={plain(copy.formal)} />
+    </div>
+    {/* The disc is larger than the block so the full circle is never clipped. */}
+    <div
+      data-cursor-reveal
+      aria-hidden="true"
+      className="absolute -inset-64 p-64 pointer-events-none bg-[#ff5a1f]"
+      style={{
+        clipPath:
+          "circle(var(--spot-r, 0px) at var(--spot-x, -999px) var(--spot-y, -999px))",
+      }}
+    >
+      <div className="py-16">
+        <p className="text-xs md:text-sm font-semibold uppercase tracking-[0.5em] mb-8 text-black">
+          {label}
+        </p>
+        <Headline parts={copy.casual} black />
+      </div>
+    </div>
+  </div>
+);
+
 const Overlay: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const heroRef = useRef<HTMLElement>(null);
   const heroTextRef = useRef<HTMLDivElement>(null);
+  const heroCasualRef = useRef<HTMLDivElement>(null);
   const aboutRef = useRef<HTMLElement>(null);
-  const carouselRef = useRef<HTMLDivElement>(null);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -96,53 +292,20 @@ const Overlay: React.FC = () => {
         );
       });
 
-      // Horizontal Logo Scroll simulation
-      gsap.to(".logo-cloud", {
-        xPercent: -50,
-        ease: "none",
-        scrollTrigger: {
-          trigger: "#home",
-          start: "bottom bottom",
-          end: "bottom top",
-          scrub: 1,
-        },
-      });
-
-      const hero = heroRef.current;
-      const heroText = heroTextRef.current;
-      const about = aboutRef.current;
-
-      if (hero && heroText) {
-        gsap.set(heroText, { transformOrigin: "50% 50%" });
-
-        const heroTl = gsap.timeline({
+      // Scroll-lit headlines: grey -> cream, character by character, scrubbed to scroll
+      gsap.utils.toArray<HTMLElement>(".lit-text").forEach((el) => {
+        gsap.to(el.querySelectorAll(".lit-char"), {
+          color: "#e8dcc8",
+          ease: "none",
+          stagger: 0.05,
           scrollTrigger: {
-            trigger: hero,
-            start: "top top",
-            end: "+=70%",
-            scrub: 1,
-            pin: true,
-            pinSpacing: true,
+            trigger: el,
+            start: "top 85%",
+            end: "center center",
+            scrub: true,
           },
         });
-
-        heroTl
-          // Phase 1: zoom in dramatically — feels like diving into the text
-          .to(heroText, { scale: 5, y: 0, ease: "power1.in" }, 0)
-          // Fade subtitle, buttons, logo cloud early
-          .to(".hero-fade", { autoAlpha: 0, y: -30, ease: "none" }, 0)
-          // Fade the text itself as it gets huge
-          .to(heroText, { autoAlpha: 0, ease: "none" }, 0.3);
-
-        if (about) {
-          heroTl.fromTo(
-            about,
-            { y: 60, autoAlpha: 0 },
-            { y: 0, autoAlpha: 1, ease: "power2.out" },
-            0.5,
-          );
-        }
-      }
+      });
     }, containerRef);
 
     const hero = heroRef.current;
@@ -205,12 +368,11 @@ const Overlay: React.FC = () => {
     };
   }, []);
 
-  const handleCarousel = (direction: number) => {
-    if (!carouselRef.current) return;
-    carouselRef.current.scrollBy({
-      left: direction * carouselRef.current.clientWidth * 0.85,
-      behavior: "smooth",
-    });
+  // Editing a field clears its own error and any stale "sent" message.
+  const updateField = (field: "name" | "email" | "message", value: string) => {
+    setFormData((d) => ({ ...d, [field]: value }));
+    setFormErrors((e) => ({ ...e, [field]: "" }));
+    setFormSuccess("");
   };
 
   const validateForm = () => {
@@ -234,71 +396,61 @@ const Overlay: React.FC = () => {
   };
 
   return (
-    <div ref={containerRef} className="w-full text-white">
+    <div ref={containerRef} className="w-full text-[#e8dcc8]">
       {/* 1. HERO SECTION */}
       <section
         id="home"
         ref={heroRef}
-        className="h-screen flex flex-col items-center justify-center relative px-6"
+        className="h-screen flex flex-col justify-center relative px-6 md:px-24 bg-[#0a0a0a] overflow-hidden"
       >
-        <div ref={heroTextRef} className="text-center reveal">
-          <h1 className="text-5xl md:text-7xl lg:text-8xl font-black tracking-tighter mb-4 leading-none flex justify-center">
-            <TextureRevealText text="HI, I'M SHIVA SAI PATRO" />
-          </h1>
-          <p className="text-gray-400 font-mono text-xs md:text-sm tracking-[0.2em] max-w-md mx-auto">
-            SOFTWARE DEVELOPER | CSE STUDENT | PROBLEM SOLVER
-          </p>
-        </div>
+        {/* Decorative accent dot */}
+        <span className="hero-fade absolute top-6 left-6 md:left-10 w-4 h-4 rounded-full bg-[#ff5a1f] z-20" />
 
-        <div className="hero-fade reveal flex flex-col md:flex-row gap-4 items-center mt-8">
+        {/* Social rail: fixed so it stays on screen through every section */}
+        <div className="fixed left-6 md:left-10 top-1/2 -translate-y-1/2 z-40 flex flex-col gap-6 text-[color:var(--ui-fg,#e8dcc8)]">
           <a
-            href="#projects"
-            className="px-10 py-4 bg-gradient-to-r from-violet-600 to-orange-500 rounded-full font-bold text-sm tracking-widest shadow-2xl hover:scale-105 transition-transform active:scale-95 flex items-center gap-2"
-          >
-            VIEW PROJECTS <ArrowRight size={16} />
-          </a>
-          <a
-            href="#contact"
-            className="px-10 py-4 border border-white/20 rounded-full font-bold text-sm tracking-widest hover:bg-white hover:text-black transition-all"
-          >
-            CONTACT ME
-          </a>
-          <a
-            href="/resume.html"
+            href="https://github.com/Shiva-Sai-369"
             target="_blank"
             rel="noopener noreferrer"
-            className="px-10 py-4 border border-white/20 rounded-full font-bold text-sm tracking-widest hover:border-violet-500 hover:text-violet-400 transition-all flex items-center gap-2"
+            aria-label="GitHub"
+            className="hover:text-[color:var(--ui-accent,#ff5a1f)] transition-colors"
           >
-            VIEW RESUME <ExternalLink size={14} />
+            <Github size={18} />
+          </a>
+          <a
+            href="https://www.linkedin.com/in/b-shiva-sai-patro-126aa3318/"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="LinkedIn"
+            className="hover:text-[color:var(--ui-accent,#ff5a1f)] transition-colors"
+          >
+            <Linkedin size={18} />
           </a>
         </div>
 
-        {/* LOGO CLOUD */}
-        <div className="hero-fade w-full overflow-hidden absolute bottom-24 left-0">
-          <div className="logo-cloud flex gap-12 whitespace-nowrap justify-center px-12 opacity-30 grayscale hover:grayscale-0 transition-all">
-            {[
-              "SHIVA SAI",
-              "DEVELOPER",
-              "ENGINEER",
-              "INNOVATOR",
-              "BUILDER",
-              "CODER",
-              "CREATOR",
-              "DESIGNER",
-            ].map((logo, i) => (
-              <span
-                key={i}
-                className="text-2xl font-black italic tracking-tighter"
-              >
-                {logo}
-              </span>
-            ))}
+        <div ref={heroTextRef} className="relative z-10 md:pl-16 reveal">
+          <HeroText show="formal" />
+        </div>
+
+        {/* Hover reveal: an orange disc that follows the cursor (CSS vars are
+            written by CustomCursor) showing the casual copy in black. */}
+        <div
+          data-cursor-reveal
+          aria-hidden="true"
+          className="hero-fade absolute inset-0 z-[15] pointer-events-none bg-[#ff5a1f] flex flex-col justify-center px-6 md:px-24"
+          style={{
+            clipPath:
+              "circle(var(--spot-r, 0px) at var(--spot-x, -999px) var(--spot-y, -999px))",
+          }}
+        >
+          <div ref={heroCasualRef} className="relative md:pl-16">
+            <HeroText show="casual" black />
           </div>
         </div>
 
         <a
           href="#about"
-          className="hero-fade absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-xs uppercase tracking-[0.3em] text-gray-400 hover:text-white transition-colors"
+          className="hero-fade absolute bottom-6 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-2 text-xs uppercase tracking-[0.3em] text-[#e8dcc8]/60 hover:text-[#ff5a1f] transition-colors"
         >
           Scroll
           <ChevronDown className="animate-bounce" size={20} />
@@ -309,168 +461,62 @@ const Overlay: React.FC = () => {
       <section
         id="about"
         ref={aboutRef}
-        className="min-h-screen flex flex-col items-center justify-center text-center px-6 py-24"
+        className="min-h-screen flex flex-col items-center justify-center text-center px-6 md:px-24 py-24 overflow-x-clip"
       >
-        <div className="reveal max-w-4xl">
-          <h2 className="text-5xl md:text-8xl font-black mb-12 tracking-tighter">
-            THE STORY
-          </h2>
-          <div className="space-y-8 text-lg md:text-2xl font-light text-gray-300 leading-relaxed">
-            <p>
-              Passionate Computer Science student focused on building efficient
-              solutions and mastering algorithms. I love problem-solving, core
-              software development, and crafting intuitive UI designs.
-            </p>
-            <p>
-              Finalist at HACK4SDG (IIT Hyderabad) and Google TechSprint 2025
-              participant. Constantly learning through projects, contests, and
-              experimentation.
-            </p>
-            <p className="font-bold text-white">
-              Let&apos;s build something impactful together!
-            </p>
-          </div>
+        <RevealBlock label="About Me" copy={aboutCopy} className="reveal w-full max-w-6xl text-left" />
+      </section>
 
-          <div className="mt-12 flex flex-wrap items-center justify-center gap-3"></div>
+      {/* EXPERIENCE — text lights up on scroll */}
+      <section
+        id="experience"
+        className="relative min-h-screen flex items-center bg-[#141414] px-6 md:px-24 py-24 overflow-hidden"
+      >
+        <span className="absolute top-[15%] right-[22%] w-11 h-11 rounded-full bg-[#ff5a1f] hidden md:block" />
+        <div className="relative z-10 w-full max-w-6xl mx-auto md:pl-16">
+          <RevealBlock label="Experience" copy={experienceCopy} />
         </div>
+      </section>
 
-        {/* EXPERIENCE — HORIZONTAL TIMELINE */}
-        <div className="reveal w-full mt-20">
-          <div className="flex items-end justify-between mb-12 max-w-6xl mx-auto">
-            <div>
-              <h3 className="text-5xl md:text-7xl font-black tracking-tighter">
-                JOURNEY
-              </h3>
-              <p className="text-gray-500 font-mono text-sm mt-2">
-                /Experience &amp; milestones
-              </p>
-            </div>
+      {/* HISTORY */}
+      <section
+        id="history"
+        className="flex flex-col items-center px-6 md:px-24 pt-8 pb-24 overflow-x-clip text-center"
+      >
+        {/* HISTORY — full-width rows; the current role is orange, others light up on hover */}
+        <div className="reveal" style={{ width: "100vw" }}>
+          <div className="max-w-6xl mx-auto px-6 md:px-0 mb-10 text-left">
+            <p className="text-xs md:text-sm font-semibold uppercase tracking-[0.5em] text-[#e8dcc8]">
+              History
+            </p>
           </div>
-
-          {/* Timeline Track */}
-          <div className="relative max-w-6xl mx-auto">
-            {/* Horizontal line */}
-            <div className="absolute top-6 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent" />
-
-            {/* Left gradient fade + button */}
-            <div className="absolute left-0 top-0 bottom-0 w-20 z-10 bg-gradient-to-r from-black to-transparent pointer-events-none" />
-            <button
-              type="button"
-              onClick={() => handleCarousel(-1)}
-              className="absolute -left-14 top-1/2 -translate-y-1/2 z-20 w-14 h-14 flex items-center justify-center text-white/40 hover:text-white transition-all"
-            >
-              <ChevronLeft size={32} />
-            </button>
-
-            {/* Right gradient fade + button */}
-            <div className="absolute right-0 top-0 bottom-0 w-20 z-10 bg-gradient-to-l from-black to-transparent pointer-events-none" />
-            <button
-              type="button"
-              onClick={() => handleCarousel(1)}
-              className="absolute -right-14 top-1/2 -translate-y-1/2 z-20 w-14 h-14 flex items-center justify-center text-white/40 hover:text-white transition-all"
-            >
-              <ChevronRight size={32} />
-            </button>
-
-            <div
-              ref={carouselRef}
-              className="flex gap-8 overflow-x-auto scroll-smooth snap-x snap-mandatory pb-8 pt-16 px-4 scrollbar-hide"
-              style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
-            >
-              {EXPERIENCE.map((item, index) => (
+          <div className="border-t border-[#e8dcc8]/10">
+            {[...EXPERIENCE]
+              .sort((x, y) => startDate(y.period) - startDate(x.period))
+              .map((item) => (
                 <article
                   key={item.role}
-                  className="group relative min-w-[320px] md:min-w-[400px] snap-center flex-shrink-0"
+                  className="group relative overflow-hidden border-b border-[#e8dcc8]/10 text-[#e8dcc8] transition-colors duration-300 hover:text-black"
                 >
-                  {/* Timeline dot */}
-                  <div className="absolute -top-16 left-8">
-                    <div className="relative">
-                      <div className="w-12 h-12 rounded-full bg-gradient-to-br from-violet-500 to-orange-500 flex items-center justify-center text-sm font-black shadow-lg shadow-violet-500/20 group-hover:scale-110 transition-transform">
-                        {String(index + 1).padStart(2, "0")}
-                      </div>
-                      <div className="absolute top-12 left-1/2 w-px h-4 bg-white/20" />
-                    </div>
-                  </div>
-
-                  {/* Card */}
-                  <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-3xl p-8 hover:border-violet-500/40 hover:bg-violet-500/5 transition-all duration-300 h-full">
-                    <div className="flex items-center gap-3 mb-4">
-                      <span className="px-3 py-1 rounded-full bg-violet-500/10 text-violet-400 text-xs font-mono uppercase tracking-wider">
-                        {item.period}
-                      </span>
-                    </div>
-                    <h4 className="text-2xl font-black tracking-tight mb-1 group-hover:text-violet-400 transition-colors">
-                      {item.role}
-                    </h4>
-                    <p className="text-sm text-gray-500 font-mono mb-4">
-                      {item.company}
-                    </p>
-                    {item.summary && (
-                      <p className="text-gray-300 text-sm leading-relaxed mb-5">
-                        {item.summary}
+                  {/* Orange fill grows from the middle of the row on hover */}
+                  <span
+                    aria-hidden="true"
+                    className="absolute inset-0 bg-[#ff5a1f] origin-center scale-y-0 transition-transform duration-500 ease-out group-hover:scale-y-100"
+                  />
+                  <div className="relative max-w-6xl mx-auto px-6 md:px-0 py-10 md:py-12 grid grid-cols-1 md:grid-cols-[320px_1fr] gap-4 md:gap-0 text-left items-start">
+                    <h3 className="text-4xl md:text-5xl font-bold tracking-tighter">
+                      {startLabel(item.period)}
+                    </h3>
+                    <div>
+                      <h4 className="text-3xl md:text-5xl font-bold tracking-tighter leading-tight">
+                        {item.role}
+                      </h4>
+                      <p className="mt-2 text-base text-[#e8dcc8]/60 transition-colors duration-300 group-hover:text-black/80">
+                        {item.company}
                       </p>
-                    )}
-                    <ul className="space-y-2.5">
-                      {item.highlights.map((highlight) => (
-                        <li
-                          key={highlight}
-                          className="flex items-start gap-2.5 text-sm text-gray-400"
-                        >
-                          <CheckCircle
-                            size={14}
-                            className="mt-0.5 text-violet-400 flex-shrink-0"
-                          />
-                          {highlight}
-                        </li>
-                      ))}
-                    </ul>
+                    </div>
                   </div>
                 </article>
               ))}
-            </div>
-          </div>
-        </div>
-
-        {/* EDUCATION & CERTS */}
-        <div className="reveal w-full max-w-5xl mt-20 grid grid-cols-1 md:grid-cols-2 gap-8 text-left">
-          <div className="bg-white/5 border border-white/10 rounded-3xl p-8">
-            <h4 className="text-xl font-black tracking-wider mb-6">
-              Education
-            </h4>
-            <ul className="space-y-4 text-gray-300">
-              {EDUCATION.map((item) => (
-                <li key={item.program} className="flex flex-col">
-                  <span className="font-semibold">{item.program}</span>
-                  <span className="text-sm text-gray-400">
-                    {item.institution}
-                  </span>
-                  <span className="text-xs text-gray-500 uppercase tracking-[0.2em]">
-                    {item.period}
-                  </span>
-                </li>
-              ))}
-            </ul>
-          </div>
-          <div className="bg-white/5 border border-white/10 rounded-3xl p-8">
-            <h4 className="text-xl font-black tracking-wider mb-6">
-              Certifications
-            </h4>
-            <ul className="space-y-4 text-gray-300">
-              {CERTIFICATIONS.map((item) => (
-                <li
-                  key={item.name}
-                  className="flex items-center justify-between"
-                >
-                  <div>
-                    <p className="font-semibold">{item.name}</p>
-                    <p className="text-sm text-gray-400">{item.issuer}</p>
-                  </div>
-                  <span className="text-xs text-gray-500 uppercase tracking-[0.2em]">
-                    {item.year}
-                  </span>
-                </li>
-              ))}
-            </ul>
           </div>
         </div>
       </section>
@@ -478,13 +524,13 @@ const Overlay: React.FC = () => {
       {/* 4. SKILLS SECTION */}
       <section
         id="skills"
-        className="min-h-screen bg-black text-white px-6 md:px-24 py-32 overflow-hidden"
+        className="min-h-screen bg-[#0a0a0a] text-[#e8dcc8] px-6 md:px-24 py-32 overflow-hidden"
       >
         <div className="reveal mb-20">
           <h2 className="text-6xl md:text-9xl font-black tracking-tighter leading-none">
             SKILLS
           </h2>
-          <p className="text-gray-500 mt-6 max-w-2xl">
+          <p className="text-[#e8dcc8]/50 mt-6 max-w-2xl">
             The weapons I wield to build, ship, and solve.
           </p>
         </div>
@@ -492,7 +538,7 @@ const Overlay: React.FC = () => {
         <div className="space-y-10">
           {/* Row 1 */}
           <div className="reveal">
-            <h3 className="text-xl font-black uppercase tracking-wide text-gray-300 mb-4">
+            <h3 className="text-xl font-black uppercase tracking-wide text-[#e8dcc8]/80 mb-4">
               Programming Languages
             </h3>
             <div className="flex flex-wrap gap-4">
@@ -520,7 +566,7 @@ const Overlay: React.FC = () => {
               ].map((skill) => (
                 <div
                   key={skill.name}
-                  className="bg-white/5 hover:bg-white/10 border border-white/10 hover:border-violet-500/40 rounded-2xl px-8 py-5 flex items-center gap-4 transition-all duration-200 cursor-default group"
+                  className="bg-white/5 hover:bg-white/10 border border-white/10 hover:border-[#ff5a1f]/40 rounded-2xl px-8 py-5 flex items-center gap-4 transition-all duration-200 cursor-default group"
                 >
                   <img
                     src={skill.logo}
@@ -537,7 +583,7 @@ const Overlay: React.FC = () => {
 
           {/* Row 2 */}
           <div className="reveal">
-            <h3 className="text-xl font-black uppercase tracking-wide text-gray-300 mb-4">
+            <h3 className="text-xl font-black uppercase tracking-wide text-[#e8dcc8]/80 mb-4">
               Web Development
             </h3>
             <div className="flex flex-wrap gap-4">
@@ -577,7 +623,7 @@ const Overlay: React.FC = () => {
               ].map((skill) => (
                 <div
                   key={skill.name}
-                  className="bg-white/5 hover:bg-white/10 border border-white/10 hover:border-orange-500/40 rounded-2xl px-8 py-5 flex items-center gap-4 transition-all duration-200 cursor-default group"
+                  className="bg-white/5 hover:bg-white/10 border border-white/10 hover:border-[#ff5a1f]/40 rounded-2xl px-8 py-5 flex items-center gap-4 transition-all duration-200 cursor-default group"
                 >
                   <img
                     src={skill.logo}
@@ -594,7 +640,7 @@ const Overlay: React.FC = () => {
 
           {/* Row 3 */}
           <div className="reveal">
-            <h3 className="text-xl font-black uppercase tracking-wide text-gray-300 mb-4">
+            <h3 className="text-xl font-black uppercase tracking-wide text-[#e8dcc8]/80 mb-4">
               Databases & Tools
             </h3>
             <div className="flex flex-wrap gap-4">
@@ -630,7 +676,7 @@ const Overlay: React.FC = () => {
               ].map((skill) => (
                 <div
                   key={skill.name}
-                  className="bg-white/5 hover:bg-white/10 border border-white/10 hover:border-cyan-500/40 rounded-2xl px-8 py-5 flex items-center gap-4 transition-all duration-200 cursor-default group"
+                  className="bg-white/5 hover:bg-white/10 border border-white/10 hover:border-[#ff5a1f]/40 rounded-2xl px-8 py-5 flex items-center gap-4 transition-all duration-200 cursor-default group"
                 >
                   <img
                     src={skill.logo}
@@ -647,7 +693,7 @@ const Overlay: React.FC = () => {
 
           {/* Row 4 */}
           <div className="reveal">
-            <h3 className="text-xl font-black uppercase tracking-wide text-gray-300 mb-4">
+            <h3 className="text-xl font-black uppercase tracking-wide text-[#e8dcc8]/80 mb-4">
               Design & Content
             </h3>
             <div className="flex flex-wrap gap-4">
@@ -667,7 +713,7 @@ const Overlay: React.FC = () => {
               ].map((skill) => (
                 <div
                   key={skill.name}
-                  className="bg-white/5 hover:bg-white/10 border border-white/10 hover:border-emerald-500/40 rounded-2xl px-8 py-5 flex items-center gap-4 transition-all duration-200 cursor-default group"
+                  className="bg-white/5 hover:bg-white/10 border border-white/10 hover:border-[#ff5a1f]/40 rounded-2xl px-8 py-5 flex items-center gap-4 transition-all duration-200 cursor-default group"
                 >
                   <img
                     src={skill.logo}
@@ -690,7 +736,7 @@ const Overlay: React.FC = () => {
           <h2 className="text-5xl md:text-8xl font-black tracking-tighter mb-4">
             THE GRIND
           </h2>
-          <p className="text-gray-500 font-mono mb-16">
+          <p className="text-[#e8dcc8]/50 mb-16">
             /Where I battle algorithms daily
           </p>
 
@@ -700,7 +746,7 @@ const Overlay: React.FC = () => {
               href="https://leetcode.com/u/Sh1vz/"
               target="_blank"
               rel="noopener noreferrer"
-              className="reveal group bg-white/5 border border-white/10 rounded-3xl p-10 hover:border-yellow-500/50 transition-all hover:bg-yellow-500/5"
+              className="reveal group bg-white/5 border border-white/10 rounded-3xl p-10 hover:border-[#ff5a1f]/50 transition-all hover:bg-[#ff5a1f]/5"
             >
               <div className="flex items-center gap-4 mb-8">
                 <img
@@ -712,46 +758,46 @@ const Overlay: React.FC = () => {
                   <span className="text-xl font-black tracking-tight block">
                     LeetCode
                   </span>
-                  <span className="text-sm text-gray-500 font-mono">
+                  <span className="text-sm text-[#e8dcc8]/50">
                     @Sh1vz
                   </span>
                 </div>
                 <ExternalLink
                   size={16}
-                  className="ml-auto text-gray-600 group-hover:text-yellow-500 transition-colors"
+                  className="ml-auto text-[#e8dcc8]/40 group-hover:text-[#ff5a1f] transition-colors"
                 />
               </div>
               <div className="space-y-5">
                 <div className="flex justify-between items-baseline">
-                  <span className="text-gray-400 text-base">
+                  <span className="text-[#e8dcc8]/70 text-base">
                     Problems Solved
                   </span>
-                  <span className="text-4xl font-black text-yellow-500">
+                  <span className="text-4xl font-black text-[#ff5a1f]">
                     214
                   </span>
                 </div>
                 {/* Difficulty split of solved problems */}
                 <div className="w-full h-2 bg-white/10 rounded-full overflow-hidden flex">
-                  <div className="h-full bg-green-500" style={{ width: "72.9%" }} />
-                  <div className="h-full bg-yellow-500" style={{ width: "24.8%" }} />
-                  <div className="h-full bg-red-500" style={{ width: "2.3%" }} />
+                  <div className="h-full bg-[#ff5a1f]" style={{ width: "72.9%" }} />
+                  <div className="h-full bg-[#e8dcc8]" style={{ width: "24.8%" }} />
+                  <div className="h-full bg-[#e8dcc8]/40" style={{ width: "2.3%" }} />
                 </div>
-                <div className="flex flex-wrap gap-3 text-sm text-gray-500">
-                  <span className="px-3 py-1.5 rounded-lg bg-green-500/10 text-green-400">
+                <div className="flex flex-wrap gap-3 text-sm text-[#e8dcc8]/50">
+                  <span className="px-3 py-1.5 rounded-lg bg-[#ff5a1f]/10 text-[#ff5a1f]">
                     Easy: 156
                   </span>
-                  <span className="px-3 py-1.5 rounded-lg bg-yellow-500/10 text-yellow-400">
+                  <span className="px-3 py-1.5 rounded-lg bg-[#e8dcc8]/10 text-[#e8dcc8]">
                     Med: 53
                   </span>
-                  <span className="px-3 py-1.5 rounded-lg bg-red-500/10 text-red-400">
+                  <span className="px-3 py-1.5 rounded-lg bg-[#e8dcc8]/5 text-[#e8dcc8]/60">
                     Hard: 5
                   </span>
                 </div>
                 <div className="flex flex-wrap gap-3 text-sm">
-                  <span className="px-3 py-1.5 rounded-lg bg-white/5 text-gray-400">
+                  <span className="px-3 py-1.5 rounded-lg bg-white/5 text-[#e8dcc8]/70">
                     Contest: 1501
                   </span>
-                  <span className="px-3 py-1.5 rounded-lg bg-white/5 text-gray-400">
+                  <span className="px-3 py-1.5 rounded-lg bg-white/5 text-[#e8dcc8]/70">
                     Top 44.28%
                   </span>
                 </div>
@@ -763,7 +809,7 @@ const Overlay: React.FC = () => {
               href="https://codeforces.com/profile/sh1vz"
               target="_blank"
               rel="noopener noreferrer"
-              className="reveal group bg-white/5 border border-white/10 rounded-3xl p-10 hover:border-blue-500/50 transition-all hover:bg-blue-500/5"
+              className="reveal group bg-white/5 border border-white/10 rounded-3xl p-10 hover:border-[#ff5a1f]/50 transition-all hover:bg-[#ff5a1f]/5"
             >
               <div className="flex items-center gap-4 mb-8">
                 <img
@@ -775,34 +821,34 @@ const Overlay: React.FC = () => {
                   <span className="text-xl font-black tracking-tight block">
                     Codeforces
                   </span>
-                  <span className="text-sm text-gray-500 font-mono">
+                  <span className="text-sm text-[#e8dcc8]/50">
                     @sh1vz
                   </span>
                 </div>
                 <ExternalLink
                   size={16}
-                  className="ml-auto text-gray-600 group-hover:text-blue-500 transition-colors"
+                  className="ml-auto text-[#e8dcc8]/40 group-hover:text-[#ff5a1f] transition-colors"
                 />
               </div>
               <div className="space-y-5">
                 <div className="flex justify-between items-baseline">
-                  <span className="text-gray-400 text-base">Rating</span>
-                  <span className="text-4xl font-black text-blue-500">
+                  <span className="text-[#e8dcc8]/70 text-base">Rating</span>
+                  <span className="text-4xl font-black text-[#ff5a1f]">
                     1006
                   </span>
                 </div>
                 {/* Progress toward Pupil (1200) */}
                 <div className="w-full h-2 bg-white/10 rounded-full overflow-hidden">
                   <div
-                    className="h-full bg-gradient-to-r from-blue-500 to-cyan-400 rounded-full"
+                    className="h-full bg-[#ff5a1f] rounded-full"
                     style={{ width: "84%" }}
                   />
                 </div>
-                <div className="flex flex-wrap gap-3 text-sm text-gray-500">
-                  <span className="px-3 py-1.5 rounded-lg bg-blue-500/10 text-blue-400">
+                <div className="flex flex-wrap gap-3 text-sm text-[#e8dcc8]/50">
+                  <span className="px-3 py-1.5 rounded-lg bg-[#ff5a1f]/10 text-[#ff5a1f]">
                     Newbie
                   </span>
-                  <span className="px-3 py-1.5 rounded-lg bg-white/5 text-gray-400">
+                  <span className="px-3 py-1.5 rounded-lg bg-white/5 text-[#e8dcc8]/70">
                     90 solved
                   </span>
                 </div>
@@ -814,7 +860,7 @@ const Overlay: React.FC = () => {
               href="https://www.codechef.com/users/shivs2006"
               target="_blank"
               rel="noopener noreferrer"
-              className="reveal group bg-white/5 border border-white/10 rounded-3xl p-10 hover:border-amber-600/50 transition-all hover:bg-amber-600/5"
+              className="reveal group bg-white/5 border border-white/10 rounded-3xl p-10 hover:border-[#ff5a1f]/50 transition-all hover:bg-[#ff5a1f]/5"
             >
               <div className="flex items-center gap-4 mb-8">
                 <img
@@ -826,34 +872,34 @@ const Overlay: React.FC = () => {
                   <span className="text-xl font-black tracking-tight block">
                     CodeChef
                   </span>
-                  <span className="text-sm text-gray-500 font-mono">
+                  <span className="text-sm text-[#e8dcc8]/50">
                     @shivs2006
                   </span>
                 </div>
                 <ExternalLink
                   size={16}
-                  className="ml-auto text-gray-600 group-hover:text-amber-500 transition-colors"
+                  className="ml-auto text-[#e8dcc8]/40 group-hover:text-[#ff5a1f] transition-colors"
                 />
               </div>
               <div className="space-y-5">
                 <div className="flex justify-between items-baseline">
-                  <span className="text-gray-400 text-base">Max Rating</span>
-                  <span className="text-4xl font-black text-amber-500">
+                  <span className="text-[#e8dcc8]/70 text-base">Max Rating</span>
+                  <span className="text-4xl font-black text-[#ff5a1f]">
                     1427
                   </span>
                 </div>
                 {/* Progress through the 2★ band (1400–1599) */}
                 <div className="w-full h-2 bg-white/10 rounded-full overflow-hidden">
                   <div
-                    className="h-full bg-gradient-to-r from-amber-600 to-yellow-400 rounded-full"
+                    className="h-full bg-[#ff5a1f] rounded-full"
                     style={{ width: "14%" }}
                   />
                 </div>
-                <div className="flex flex-wrap gap-3 text-sm text-gray-500">
-                  <span className="px-3 py-1.5 rounded-lg bg-amber-500/10 text-amber-400">
+                <div className="flex flex-wrap gap-3 text-sm text-[#e8dcc8]/50">
+                  <span className="px-3 py-1.5 rounded-lg bg-[#ff5a1f]/10 text-[#ff5a1f]">
                     2★
                   </span>
-                  <span className="px-3 py-1.5 rounded-lg bg-white/5 text-gray-400">
+                  <span className="px-3 py-1.5 rounded-lg bg-white/5 text-[#e8dcc8]/70">
                     2500+ solved
                   </span>
                 </div>
@@ -864,7 +910,7 @@ const Overlay: React.FC = () => {
           {/* GitHub Contribution Heatmap */}
           <div className="reveal mt-16">
             <div className="flex items-center gap-3 mb-6">
-              <Github size={20} className="text-gray-400" />
+              <Github size={20} className="text-[#e8dcc8]/70" />
               <h3 className="text-xl font-black tracking-tight">
                 GitHub Contributions
               </h3>
@@ -872,14 +918,14 @@ const Overlay: React.FC = () => {
                 href="https://github.com/Shiva-Sai-369"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="ml-auto text-xs font-mono text-gray-500 hover:text-white transition-colors flex items-center gap-1"
+                className="ml-auto text-xs text-[#e8dcc8]/50 hover:text-[#ff5a1f] transition-colors flex items-center gap-1"
               >
                 @Shiva-Sai-369 <ExternalLink size={12} />
               </a>
             </div>
             <div className="bg-white/5 border border-white/10 rounded-3xl p-6 md:p-8 overflow-x-auto">
               <img
-                src="https://ghchart.rshah.org/Shiva-Sai-369"
+                src="https://ghchart.rshah.org/00a5e0/Shiva-Sai-369"
                 alt="GitHub Contribution Heatmap"
                 className="w-full min-w-[700px] invert opacity-90"
               />
@@ -894,7 +940,7 @@ const Overlay: React.FC = () => {
       {/* 5. CONTACT SECTION */}
       <section
         id="contact"
-        className="relative overflow-hidden min-h-screen bg-white text-black px-6 md:px-24 pt-32 pb-[420px] flex flex-col items-center justify-center text-center z-0"
+        className="relative overflow-hidden min-h-screen bg-[#0a0a0a] text-[#e8dcc8] px-6 md:px-24 pt-32 pb-[420px] flex flex-col items-center justify-center text-center z-0"
       >
         <div className="reveal w-full max-w-4xl relative z-10">
           <h2 className="text-6xl md:text-9xl font-black tracking-tighter leading-none mb-12">
@@ -908,55 +954,58 @@ const Overlay: React.FC = () => {
               <input
                 type="text"
                 placeholder="Full Name*"
+                aria-label="Full name"
                 value={formData.name}
                 onChange={(e) =>
-                  setFormData({ ...formData, name: e.target.value })
+                  updateField("name", e.target.value)
                 }
-                className={`bg-gray-100 border-none p-6 rounded-2xl focus:ring-2 ring-black w-full ${
+                className={`bg-[#1c1c1c] text-[#e8dcc8] placeholder:text-[#e8dcc8]/40 border-none p-6 rounded-2xl focus:ring-2 ring-[#ff5a1f] w-full ${
                   formErrors.name ? "ring-2 ring-red-500" : ""
                 }`}
               />
               {formErrors.name && (
-                <p className="text-xs text-red-600">{formErrors.name}</p>
+                <p className="text-xs text-red-400">{formErrors.name}</p>
               )}
             </div>
             <div className="space-y-2">
               <input
                 type="email"
                 placeholder="Email Address*"
+                aria-label="Email address"
                 value={formData.email}
                 onChange={(e) =>
-                  setFormData({ ...formData, email: e.target.value })
+                  updateField("email", e.target.value)
                 }
-                className={`bg-gray-100 border-none p-6 rounded-2xl focus:ring-2 ring-black w-full ${
+                className={`bg-[#1c1c1c] text-[#e8dcc8] placeholder:text-[#e8dcc8]/40 border-none p-6 rounded-2xl focus:ring-2 ring-[#ff5a1f] w-full ${
                   formErrors.email ? "ring-2 ring-red-500" : ""
                 }`}
               />
               {formErrors.email && (
-                <p className="text-xs text-red-600">{formErrors.email}</p>
+                <p className="text-xs text-red-400">{formErrors.email}</p>
               )}
             </div>
             <div className="space-y-2 md:col-span-2">
               <textarea
                 placeholder="Message*"
+                aria-label="Message"
                 value={formData.message}
                 onChange={(e) =>
-                  setFormData({ ...formData, message: e.target.value })
+                  updateField("message", e.target.value)
                 }
-                className={`w-full bg-gray-100 border-none p-6 rounded-2xl h-40 focus:ring-2 ring-black ${
+                className={`w-full bg-[#1c1c1c] text-[#e8dcc8] placeholder:text-[#e8dcc8]/40 border-none p-6 rounded-2xl h-40 focus:ring-2 ring-[#ff5a1f] ${
                   formErrors.message ? "ring-2 ring-red-500" : ""
                 }`}
               ></textarea>
               {formErrors.message && (
-                <p className="text-xs text-red-600">{formErrors.message}</p>
+                <p className="text-xs text-red-400">{formErrors.message}</p>
               )}
             </div>
-            <button className="md:col-span-2 py-6 bg-black text-white font-black text-xl rounded-2xl hover:scale-[1.01] transition-transform active:scale-95 uppercase tracking-widest">
+            <button className="md:col-span-2 py-6 bg-[#ff5a1f] text-black font-black text-xl rounded-2xl hover:scale-[1.01] transition-transform active:scale-95 uppercase tracking-widest">
               SEND MESSAGE
             </button>
           </form>
           {formSuccess && (
-            <p className="mt-6 text-sm text-green-600">{formSuccess}</p>
+            <p className="mt-6 text-sm text-[#e8dcc8]">{formSuccess}</p>
           )}
 
           <div className="mt-10 flex flex-wrap items-center justify-center gap-6 text-sm">
@@ -964,7 +1013,7 @@ const Overlay: React.FC = () => {
               href="https://www.linkedin.com/in/b-shiva-sai-patro-126aa3318/"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-2 px-5 py-2 border border-black/20 rounded-full hover:bg-black hover:text-white transition"
+              className="flex items-center gap-2 px-5 py-2 border border-[#e8dcc8]/20 rounded-full hover:bg-[#ff5a1f] hover:border-[#ff5a1f] hover:text-black transition"
             >
               <Linkedin size={14} /> LinkedIn
             </a>
@@ -972,7 +1021,7 @@ const Overlay: React.FC = () => {
               href="https://github.com/Shiva-Sai-369"
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-2 px-5 py-2 border border-black/20 rounded-full hover:bg-black hover:text-white transition"
+              className="flex items-center gap-2 px-5 py-2 border border-[#e8dcc8]/20 rounded-full hover:bg-[#ff5a1f] hover:border-[#ff5a1f] hover:text-black transition"
             >
               <Github size={14} /> GitHub
             </a>
@@ -982,19 +1031,19 @@ const Overlay: React.FC = () => {
       </section>
 
       {/* 6. FOOTER */}
-      <footer className="bg-black py-24 px-6 md:px-24 overflow-hidden relative">
+      <footer className="bg-[#0a0a0a] py-24 px-6 md:px-24 overflow-hidden relative">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-12 mb-20">
           <div>
             <h2 className="text-6xl md:text-[10vw] font-black tracking-tighter leading-[0.8] mb-8">
               SHIVA <br /> SAI
             </h2>
-            <p className="text-gray-500 font-mono text-xs uppercase tracking-[0.3em]">
+            <p className="text-[#e8dcc8]/50 text-xs uppercase tracking-[0.3em]">
               © 2026 All rights reserved
             </p>
           </div>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-12">
             <div className="space-y-3">
-              <p className="text-xs font-mono text-gray-500 uppercase tracking-widest mb-4">
+              <p className="text-xs text-[#e8dcc8]/50 uppercase tracking-widest mb-4">
                 Quick Links
               </p>
               {[
@@ -1008,14 +1057,14 @@ const Overlay: React.FC = () => {
                 <a
                   key={item.id}
                   href={`#${item.id}`}
-                  className="font-bold hover:text-orange-500 transition-colors"
+                  className="block font-bold hover:text-[#ff5a1f] transition-colors"
                 >
                   {item.label}
                 </a>
               ))}
             </div>
             <div className="space-y-3">
-              <p className="text-xs font-mono text-gray-500 uppercase tracking-widest mb-4">
+              <p className="text-xs text-[#e8dcc8]/50 uppercase tracking-widest mb-4">
                 Social
               </p>
               {[
@@ -1033,7 +1082,9 @@ const Overlay: React.FC = () => {
                 <a
                   key={item.label}
                   href={item.href}
-                  className="flex items-center gap-3 font-bold hover:text-orange-500 transition-colors"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-3 font-bold hover:text-[#ff5a1f] transition-colors"
                 >
                   <item.icon size={16} />
                   {item.label}
@@ -1041,13 +1092,13 @@ const Overlay: React.FC = () => {
               ))}
             </div>
             <div className="space-y-3">
-              <p className="text-xs font-mono text-gray-500 uppercase tracking-widest mb-4">
+              <p className="text-xs text-[#e8dcc8]/50 uppercase tracking-widest mb-4">
                 Status
               </p>
-              <p className="font-bold text-emerald-400">
+              <p className="font-bold text-[#ff5a1f]">
                 Open for collaborations
               </p>
-              <p className="font-bold text-gray-400">Response time: 24h</p>
+              <p className="font-bold text-[#e8dcc8]/70">Response time: 24h</p>
             </div>
           </div>
         </div>
@@ -1057,7 +1108,7 @@ const Overlay: React.FC = () => {
           {[...Array(20)].map((_, i) => (
             <div
               key={i}
-              className="w-16 h-16 bg-white rotate-45 flex-shrink-0"
+              className="w-16 h-16 bg-[#e8dcc8] rotate-45 flex-shrink-0"
             ></div>
           ))}
         </div>

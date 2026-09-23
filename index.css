@@ -11,3 +11,15 @@
     0 0 60px rgba(139, 92, 246, 0.08),
     0 0 120px rgba(0, 0, 0, 0.3);
 }
+
+/* Custom cursor: hide the native cursor only when the component is active
+   (fine-pointer devices). Touch devices never get this class. */
+html.custom-cursor-active,
+html.custom-cursor-active * {
+  cursor: none !important;
+}
+
+/* Smooth in-page jumps for the nav / footer anchors. */
+html {
+  scroll-behavior: smooth;
+}

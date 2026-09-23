@@ -26,6 +26,7 @@ export const PROJECTS: Project[] = [
     image: "/Clari Landing page.png",
     images: ["/Clari Landing page.png"],
     github: "https://github.com/Shiva-Sai-369/Clari-Ai-Meeting_Assistant",
+    live: "", // TODO: add the live demo URL once deployed
     stack: ["React", "TypeScript", "OpenAI Whisper", "Supabase", "Tailwind CSS"],
   },
   {
@@ -39,6 +40,7 @@ export const PROJECTS: Project[] = [
     image: "/CRM.png",
     images: ["/CRM.png"],
     github: "https://github.com/Shiva-Sai-369/CRM",
+    live: "", // TODO: add the live demo URL once deployed
     stack: ["Next.js", "TypeScript", "Supabase", "PostgreSQL", "Zustand", "Tailwind CSS"],
   },
   {
@@ -66,6 +68,7 @@ export const PROJECTS: Project[] = [
     image: "/Ramirez.jpeg",
     images: ["/Ramirez.jpeg"],
     github: "https://github.com/Shiva-Sai-369/ramirez",
+    live: "", // TODO: add the live demo URL once deployed
     stack: ["Python", "Scapy", "Machine Learning", "C"],
   },
   {
@@ -79,6 +82,7 @@ export const PROJECTS: Project[] = [
     image: "/raspiflix.png",
     images: ["/raspiflix.png"],
     github: "https://github.com/Shiva-Sai-369/Raspiflix",
+    live: "", // TODO: add the live demo URL once deployed
     stack: ["React", "Vite", "JavaScript", "TMDB API"],
   },
 ];

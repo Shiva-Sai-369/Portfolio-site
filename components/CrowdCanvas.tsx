@@ -257,19 +257,50 @@ const CrowdCanvas = ({ src, rows = 15, cols = 7 }: CrowdCanvasProps) => {
       initCrowd();
     };
 
+    // Only render/animate while the canvas is on screen: 100+ tweens and a
+    // full redraw per frame is wasted work everywhere else on the page.
+    let cancelled = false;
+    let visible = false;
+    const setVisible = (v: boolean) => {
+      visible = v;
+      if (v) gsap.ticker.add(render);
+      else gsap.ticker.remove(render);
+      crowd.forEach((peep) => (v ? peep.walk.resume() : peep.walk.pause()));
+    };
+
     const init = () => {
+      if (cancelled) return; // unmounted before the image finished loading
       createPeeps();
       resize();
-      gsap.ticker.add(render);
+      if (visible) gsap.ticker.add(render);
+      else crowd.forEach((peep) => peep.walk.pause());
     };
 
     img.onload = init;
     img.src = config.src;
 
-    const handleResize = () => resize();
+    const io = new IntersectionObserver(
+      ([entry]) => setVisible(entry.isIntersecting),
+      { rootMargin: "100px" },
+    );
+    io.observe(canvas);
+
+    // Debounced: resize() rebuilds every walk, so don't run it per event.
+    let resizeTimer = 0;
+    const handleResize = () => {
+      window.clearTimeout(resizeTimer);
+      resizeTimer = window.setTimeout(() => {
+        if (!allPeeps.length) return;
+        resize();
+        if (!visible) crowd.forEach((peep) => peep.walk.pause());
+      }, 150);
+    };
     window.addEventListener("resize", handleResize);
 
     return () => {
+      cancelled = true;
+      io.disconnect();
+      window.clearTimeout(resizeTimer);
       window.removeEventListener("resize", handleResize);
       gsap.ticker.remove(render);
       crowd.forEach((peep) => {
