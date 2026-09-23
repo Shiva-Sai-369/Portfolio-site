@@ -1,10 +1,16 @@
-import React, { useLayoutEffect, useMemo, useRef, useState } from "react";
+import React, {
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import TextureRevealText from "./TextureRevealText";
 import ProjectsStack from "./ProjectsStack";
 import { CrowdCanvas } from "./CrowdCanvas";
-import type { Tone } from "./ToneContext";
+import { useTone, type Tone } from "./ToneContext";
 import {
   SKILLS,
   SKILL_CATEGORIES,
@@ -54,11 +60,11 @@ const iconMap: Record<string, React.ElementType> = {
 const heroCopy: Record<Tone, { headline: string[]; sub: string }> = {
   formal: {
     headline: ["Code by day.", "Design by night.", "Student always."],
-    sub: "Full-stack developer and product designer, currently a CS student at KL University.",
+    sub: "Growing, learning, building — since 2006.",
   },
   casual: {
     headline: ["Codes by day.", "Panics by night.", "Sleep? Optional."],
-    sub: "Powered by caffeine, deadlines, and mild delusion. Somehow it keeps working.",
+    sub: "Learning new shit since 2006. Still at it.",
   },
 };
 
@@ -74,7 +80,7 @@ const HeroText: React.FC<{ show: Tone; black?: boolean }> = ({
 }) => (
   <>
     <p
-      className={`text-xs md:text-sm font-semibold uppercase tracking-[0.5em] mb-6 ${
+      className={`font-display text-xs md:text-sm font-semibold uppercase tracking-[0.5em] mb-6 text-center ${
         black ? "text-black" : "text-[#e8dcc8]"
       }`}
     >
@@ -85,16 +91,21 @@ const HeroText: React.FC<{ show: Tone; black?: boolean }> = ({
         <div
           key={t}
           aria-hidden={t !== show || black}
-          className={`[grid-area:1/1] ${t === show ? "" : "invisible"}`}
+          className={`[grid-area:1/1] transition-opacity duration-500 ease-in-out ${
+            t === show ? "opacity-100" : "opacity-0 pointer-events-none"
+          }`}
         >
           <h1
             data-cursor-spotlight
-            className="w-fit font-black uppercase tracking-tighter leading-[0.85] text-6xl md:text-8xl lg:text-[9rem]"
+            aria-label={heroCopy[t].headline.join(" ")}
+            className="font-display mx-auto w-fit text-center font-bold uppercase tracking-[-0.03em] leading-[0.86] text-6xl md:text-8xl lg:text-[9.5rem]"
           >
             {heroCopy[t].headline.map((line, i) => (
+              // Each line clips its characters, which slide up from below on load.
               <span
                 key={i}
-                className={`block ${
+                aria-hidden="true"
+                className={`block overflow-hidden pb-[0.04em] ${
                   black
                     ? "text-black"
                     : i === 1
@@ -102,12 +113,16 @@ const HeroText: React.FC<{ show: Tone; black?: boolean }> = ({
                       : "text-[#e8dcc8]"
                 }`}
               >
-                {line}
+                {line.split("").map((ch, k) => (
+                  <span key={k} className="hero-char inline-block">
+                    {ch === " " ? " " : ch}
+                  </span>
+                ))}
               </span>
             ))}
           </h1>
           <p
-            className={`mt-8 max-w-xl text-base md:text-lg leading-relaxed ${
+            className={`hero-sub mt-8 mx-auto max-w-xl text-center text-base md:text-lg leading-relaxed ${
               black ? "text-black" : "text-[#e8dcc8]/70"
             }`}
           >
@@ -251,7 +266,66 @@ const RevealBlock: React.FC<{
   </div>
 );
 
+/**
+ * Full-bleed looping hero video. Silently hides itself if public/hero.mp4 is
+ * missing (or fails to decode), and stays paused under prefers-reduced-motion.
+ */
+const HeroVideo: React.FC = () => {
+  const ref = useRef<HTMLVideoElement>(null);
+  const [failed, setFailed] = useState(false);
+
+  useEffect(() => {
+    const v = ref.current;
+    if (!v) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) v.pause();
+  }, []);
+
+  if (failed) return null;
+  return (
+    <video
+      ref={ref}
+      aria-hidden="true"
+      className="absolute inset-0 h-full w-full object-cover opacity-60 pointer-events-none"
+      src="/hero.mp4"
+      autoPlay
+      muted
+      loop
+      playsInline
+      preload="auto"
+      onError={() => setFailed(true)}
+    />
+  );
+};
+
+/**
+ * Hero portrait: static (no rotation/tilt). The face sits at ~66% of the photo;
+ * anchoring that point at 66% of the hero puts the head right of centre with
+ * the shoulders under the headline (as in the reference), on any screen width.
+ * Edges fade into the hero backdrop so there is no seam.
+ */
+const HeroPortrait: React.FC = () => (
+  <div aria-hidden="true" className="absolute inset-0 overflow-hidden pointer-events-none">
+    <img
+      src="/Hero Background.jpeg"
+      alt=""
+      className="absolute top-0 h-full w-auto max-w-none"
+      style={{
+        left: "66%",
+        transform: "translateX(-66%)",
+        filter: "brightness(1.55) contrast(1.08)",
+        WebkitMaskImage:
+          "linear-gradient(to right, transparent 0, #000 14%, #000 86%, transparent 100%)",
+        maskImage:
+          "linear-gradient(to right, transparent 0, #000 14%, #000 86%, transparent 100%)",
+      }}
+    />
+  </div>
+);
+
 const Overlay: React.FC = () => {
+  // Base hero copy follows the nav toggle; the hover disc always shows the other tone.
+  const { tone } = useTone();
+  const otherTone: Tone = tone === "formal" ? "casual" : "formal";
   const containerRef = useRef<HTMLDivElement>(null);
   const heroRef = useRef<HTMLElement>(null);
   const heroTextRef = useRef<HTMLDivElement>(null);
@@ -268,6 +342,39 @@ const Overlay: React.FC = () => {
     message: "",
   });
   const [formSuccess, setFormSuccess] = useState("");
+
+  // Letter-by-letter headline reveal, started by the loader's START (or right
+  // away when the loader is skipped). CSS hides the characters until then.
+  useEffect(() => {
+    const play = () => {
+      const root = document.documentElement;
+      if (root.dataset.intro === "done") return;
+      root.dataset.intro = "done";
+      const chars = gsap.utils.toArray<HTMLElement>(".hero-char");
+      gsap.fromTo(
+        chars,
+        { yPercent: 105, rotateX: 20 },
+        {
+          yPercent: 0,
+          rotateX: 0,
+          duration: 1.1,
+          ease: "power3.out",
+          stagger: 0.03,
+          clearProps: "transform",
+        },
+      );
+      gsap.fromTo(
+        ".hero-sub",
+        { opacity: 0, y: 20 },
+        { opacity: 1, y: 0, duration: 0.9, delay: 0.5, ease: "power2.out" },
+      );
+    };
+    if (document.documentElement.dataset.intro !== "pending") {
+      document.documentElement.dataset.intro = "done";
+    }
+    window.addEventListener("intro:start", play);
+    return () => window.removeEventListener("intro:start", play);
+  }, []);
 
   useLayoutEffect(() => {
     const ctx = gsap.context(() => {
@@ -401,8 +508,14 @@ const Overlay: React.FC = () => {
       <section
         id="home"
         ref={heroRef}
-        className="h-screen flex flex-col justify-center relative px-6 md:px-24 bg-[#0a0a0a] overflow-hidden"
+        className="h-screen flex flex-col justify-center relative px-6 md:px-24 bg-[radial-gradient(ellipse_at_50%_40%,#1c1c1c_0%,#0d0d0d_70%)] overflow-hidden"
       >
+        {/* Looping dark video (drop a file at public/hero.mp4) under the portrait */}
+        <HeroVideo />
+        <HeroPortrait />
+        {/* Dark overlay keeps the centred headline legible over the image */}
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(10,10,10,0.3)_0%,rgba(10,10,10,0.2)_55%,rgba(10,10,10,0.45)_100%)] pointer-events-none" />
+
         {/* Decorative accent dot */}
         <span className="hero-fade absolute top-6 left-6 md:left-10 w-4 h-4 rounded-full bg-[#ff5a1f] z-20" />
 
@@ -428,8 +541,8 @@ const Overlay: React.FC = () => {
           </a>
         </div>
 
-        <div ref={heroTextRef} className="relative z-10 md:pl-16 reveal">
-          <HeroText show="formal" />
+        <div ref={heroTextRef} className="relative z-10 reveal">
+          <HeroText show={tone} />
         </div>
 
         {/* Hover reveal: an orange disc that follows the cursor (CSS vars are
@@ -443,8 +556,8 @@ const Overlay: React.FC = () => {
               "circle(var(--spot-r, 0px) at var(--spot-x, -999px) var(--spot-y, -999px))",
           }}
         >
-          <div ref={heroCasualRef} className="relative md:pl-16">
-            <HeroText show="casual" black />
+          <div ref={heroCasualRef} className="relative">
+            <HeroText show={otherTone} black />
           </div>
         </div>
 

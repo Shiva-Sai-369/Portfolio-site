@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Overlay from "./components/Overlay";
 import CustomCursor from "./components/CustomCursor";
+import Loader from "./components/Loader";
 import { ToneProvider, useTone } from "./components/ToneContext";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -57,6 +58,7 @@ const App: React.FC = () => {
   return (
     <ToneProvider>
     <CustomCursor />
+    <Loader />
     <div className="relative w-full min-h-screen bg-[#0a0a0a] overflow-x-clip">
       {/* HTML Content Overlay - Scrollable */}
       <div
