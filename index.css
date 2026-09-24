@@ -24,11 +24,13 @@ html {
   scroll-behavior: smooth;
 }
 
-/* Hero intro: characters/subtitle start hidden until the loader's START. */
-html[data-intro="pending"] .hero-char {
+/* Hero intro: characters/subtitle start hidden until the loader finishes. */
+html[data-intro="pending"] .hero-char,
+html[data-intro="go"] .hero-char {
   transform: translateY(105%) rotateX(20deg);
 }
-html[data-intro="pending"] .hero-sub {
+html[data-intro="pending"] .hero-sub,
+html[data-intro="go"] .hero-sub {
   opacity: 0;
 }
 

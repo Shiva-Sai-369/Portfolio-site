@@ -40,6 +40,8 @@ import {
   MapPin,
 } from "lucide-react";
 
+gsap.registerPlugin(ScrollTrigger);
+
 const iconMap: Record<string, React.ElementType> = {
   cube: Box,
   code: Code,
@@ -98,7 +100,7 @@ const HeroText: React.FC<{ show: Tone; black?: boolean }> = ({
           <h1
             data-cursor-spotlight
             aria-label={heroCopy[t].headline.join(" ")}
-            className="font-display mx-auto w-fit text-center font-bold uppercase tracking-[-0.03em] leading-[0.86] text-6xl md:text-8xl lg:text-[9.5rem]"
+            className="font-display mx-auto w-fit text-center font-bold uppercase tracking-[-0.03em] leading-[0.86] text-5xl md:text-7xl lg:text-[7rem]"
           >
             {heroCopy[t].headline.map((line, i) => (
               // Each line clips its characters, which slide up from below on load.
@@ -122,7 +124,7 @@ const HeroText: React.FC<{ show: Tone; black?: boolean }> = ({
             ))}
           </h1>
           <p
-            className={`hero-sub mt-8 mx-auto max-w-xl text-center text-base md:text-lg leading-relaxed ${
+            className={`hero-sub mt-6 mx-auto max-w-xl text-center text-sm md:text-base leading-relaxed ${
               black ? "text-black" : "text-[#e8dcc8]/70"
             }`}
           >
@@ -298,25 +300,19 @@ const HeroVideo: React.FC = () => {
 };
 
 /**
- * Hero portrait: static (no rotation/tilt). The face sits at ~66% of the photo;
- * anchoring that point at 66% of the hero puts the head right of centre with
- * the shoulders under the headline (as in the reference), on any screen width.
- * Edges fade into the hero backdrop so there is no seam.
+ * Hero background photo: full-bleed and static. The face sits at ~65% of the
+ * photo width, so object-position keeps the head right of centre on any
+ * screen size while the frame is cropped to fill the hero.
  */
 const HeroPortrait: React.FC = () => (
   <div aria-hidden="true" className="absolute inset-0 overflow-hidden pointer-events-none">
     <img
-      src="/Hero Background.jpeg"
+      src="/Hero Background.jpg"
       alt=""
-      className="absolute top-0 h-full w-auto max-w-none"
+      className="absolute inset-0 h-full w-full object-cover"
       style={{
-        left: "66%",
-        transform: "translateX(-66%)",
+        objectPosition: "65% 50%",
         filter: "brightness(1.55) contrast(1.08)",
-        WebkitMaskImage:
-          "linear-gradient(to right, transparent 0, #000 14%, #000 86%, transparent 100%)",
-        maskImage:
-          "linear-gradient(to right, transparent 0, #000 14%, #000 86%, transparent 100%)",
       }}
     />
   </div>
@@ -343,7 +339,7 @@ const Overlay: React.FC = () => {
   });
   const [formSuccess, setFormSuccess] = useState("");
 
-  // Letter-by-letter headline reveal, started by the loader's START (or right
+  // Letter-by-letter headline reveal, started as the loader fades (or right
   // away when the loader is skipped). CSS hides the characters until then.
   useEffect(() => {
     const play = () => {
@@ -369,9 +365,15 @@ const Overlay: React.FC = () => {
         { opacity: 1, y: 0, duration: 0.9, delay: 0.5, ease: "power2.out" },
       );
     };
-    if (document.documentElement.dataset.intro !== "pending") {
-      document.documentElement.dataset.intro = "done";
-    }
+    // "go": the loader already finished before this chunk arrived.
+    const intro = document.documentElement.dataset.intro;
+    if (intro === "go") play();
+    else if (intro === "pending") {
+      // Mounted under the loader: have GSAP read the characters' transforms
+      // now, while that's hidden, rather than in the frame the reveal starts
+      // (a first read of all the characters takes a few hundred ms).
+      gsap.set(".hero-char", { yPercent: 105, rotateX: 20 });
+    } else document.documentElement.dataset.intro = "done";
     window.addEventListener("intro:start", play);
     return () => window.removeEventListener("intro:start", play);
   }, []);
@@ -475,6 +477,10 @@ const Overlay: React.FC = () => {
     };
   }, []);
 
+  useEffect(() => {
+    ScrollTrigger.refresh();
+  }, []);
+
   // Editing a field clears its own error and any stale "sent" message.
   const updateField = (field: "name" | "email" | "message", value: string) => {
     setFormData((d) => ({ ...d, [field]: value }));
@@ -515,9 +521,6 @@ const Overlay: React.FC = () => {
         <HeroPortrait />
         {/* Dark overlay keeps the centred headline legible over the image */}
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(10,10,10,0.3)_0%,rgba(10,10,10,0.2)_55%,rgba(10,10,10,0.45)_100%)] pointer-events-none" />
-
-        {/* Decorative accent dot */}
-        <span className="hero-fade absolute top-6 left-6 md:left-10 w-4 h-4 rounded-full bg-[#ff5a1f] z-20" />
 
         {/* Social rail: fixed so it stays on screen through every section */}
         <div className="fixed left-6 md:left-10 top-1/2 -translate-y-1/2 z-40 flex flex-col gap-6 text-[color:var(--ui-fg,#e8dcc8)]">

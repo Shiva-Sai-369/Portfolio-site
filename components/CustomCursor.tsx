@@ -49,6 +49,15 @@ export default function CustomCursor() {
 
     // True while the pointer is inside a visible spotlight zone (hero headline).
     const inSpotlightZone = () => {
+      // A full-screen gate (the loader) covers the hero: its headline is still
+      // laid out underneath, so without this check the dot would hide over it.
+      if (
+        document
+          .elementFromPoint(targetX, targetY)
+          ?.closest("[data-cursor-block-spotlight]")
+      ) {
+        return false;
+      }
       for (const el of document.querySelectorAll<HTMLElement>(SPOTLIGHT_SELECTOR)) {
         if (getComputedStyle(el).visibility === "hidden") continue;
         const b = el.getBoundingClientRect();
