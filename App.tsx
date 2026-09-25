@@ -1,4 +1,5 @@
 import React, { Suspense, lazy, useCallback, useEffect, useState } from "react";
+import { Analytics } from "@vercel/analytics/react";
 import CustomCursor from "./components/CustomCursor";
 import BrandDot from "./components/BrandDot";
 import Preloader, { initialStage, type Stage } from "./components/Preloader";
@@ -57,6 +58,7 @@ const App: React.FC = () => {
 
   return (
     <ToneProvider>
+    <Analytics />
     <CustomCursor />
     <Preloader stage={stage} setStage={setStage} mountPortfolio={mountPortfolio} />
     {/* Permanent logo. While loading, the Preloader renders the big version of
