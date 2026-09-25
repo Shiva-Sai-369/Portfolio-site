@@ -69,6 +69,14 @@ ffmpeg -y -ss 0.00 -t 10.32 -i captures/preloader.webm -vf "fps=12,scale=960:-1:
 
 `captures/` is gitignored. Commit what lands in `docs/`.
 
+### Updating the résumé
+
+Edit `resume.html`, then with `npm run dev` running:
+
+```bash
+npm run resume:pdf   # prints resume.html to public/resume.pdf, the footer's download
+```
+
 ## Structure
 
 ```
@@ -83,8 +91,8 @@ ffmpeg -y -ss 0.00 -t 10.32 -i captures/preloader.webm -vf "fps=12,scale=960:-1:
 │   ├── ToneContext.tsx      # formal / casual state and crossfading copy
 │   └── CustomCursor.tsx     # cursor, hover ring and spotlight
 ├── constants.tsx            # projects, skills, experience and education content
-├── public/                  # images
-├── resume.html              # standalone résumé page
+├── public/                  # images, and resume.pdf behind the footer's download button
+├── resume.html              # résumé source, printed to public/resume.pdf
 ├── scripts/                 # Playwright capture scripts for the README visuals
 └── docs/                    # README GIF and screenshots
 ```

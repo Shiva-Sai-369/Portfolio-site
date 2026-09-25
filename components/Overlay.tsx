@@ -18,6 +18,7 @@ import {
 } from "../constants";
 import {
   ArrowRight,
+  Download,
   Github,
   Linkedin,
   Mail,
@@ -1150,11 +1151,23 @@ const Overlay: React.FC = () => {
 
       {/* 6. FOOTER */}
       <footer className="bg-[#0a0a0a] py-24 px-6 md:px-24 overflow-hidden relative">
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-12 mb-20">
+        {/* The full name only fits beside the link columns from xl up; there it
+            is sized to the space left over (widest line "SAI PATRO" ≈ 5em). */}
+        <div className="flex flex-col xl:flex-row justify-between items-start xl:items-end gap-12 mb-20">
           <div>
-            <h2 className="text-6xl md:text-[10vw] font-black tracking-tighter leading-[0.8] mb-8">
-              SHIVA <br /> SAI
+            <h2 className="whitespace-nowrap text-[14vw] md:text-[12vw] xl:text-[length:min(10vw,calc(19.5vw_-_165px))] font-black tracking-tighter [word-spacing:0.15em] leading-[0.8] mb-8">
+              B SHIVA <br /> SAI PATRO
             </h2>
+            {/* Swap in a new résumé by replacing public/resume.pdf. Dark cursor
+                ring so it stays visible on the orange fill. */}
+            <a
+              href="/resume.pdf"
+              download="B-Shiva-Sai-Patro-Resume.pdf"
+              data-cursor-color="#0a0a0a"
+              className="inline-flex items-center gap-2 mb-8 px-6 py-3 rounded-full bg-[#ff5a1f] text-black text-[11px] font-bold uppercase tracking-[0.25em] hover:bg-[#e8dcc8] transition-colors"
+            >
+              <Download size={14} /> Download résumé
+            </a>
             <p className="text-[#e8dcc8]/50 text-xs uppercase tracking-[0.3em]">
               © 2026 All rights reserved
             </p>

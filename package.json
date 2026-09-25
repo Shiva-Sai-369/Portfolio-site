@@ -8,7 +8,8 @@
     "build": "vite build",
     "preview": "vite preview",
     "capture:preloader": "node scripts/capture-preloader.ts",
-    "capture:screenshots": "node scripts/capture-screenshots.ts"
+    "capture:screenshots": "node scripts/capture-screenshots.ts",
+    "resume:pdf": "node scripts/print-resume.ts"
   },
   "dependencies": {
     "@react-three/drei": "^10.7.7",

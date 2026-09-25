@@ -4,9 +4,14 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Shiva Sai Patro — Resume</title>
+    <title>B Shiva Sai Patro — Resume</title>
+    <!-- Computer Modern, the LaTeX typeface. `npm run resume:pdf` prints this page to public/resume.pdf. -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/computer-modern@0.1.3/cmu-serif.css" />
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap');
+        @page {
+            size: letter;
+            margin: 0;
+        }
 
         *,
         *::before,
@@ -16,691 +21,277 @@
             box-sizing: border-box;
         }
 
+        html {
+            background: #e5e5e5;
+        }
+
         body {
-            font-family: 'Inter', sans-serif;
-            color: #1a1a1a;
-            line-height: 1.55;
-            max-width: 850px;
-            margin: 0 auto;
-            padding: 0;
-            font-size: 12.5px;
-            background: #f5f5f5;
+            font-family: "CMU Serif", "Latin Modern Roman", Georgia, serif;
+            font-weight: 500;
+            font-size: 11pt;
+            line-height: 1.18;
+            color: #000;
         }
 
         .page {
+            width: 8.5in;
+            min-height: 11in;
+            margin: 24px auto;
+            padding: 0.3in 0.4in 0.4in 0.42in;
             background: #fff;
-            box-shadow: 0 2px 24px rgba(0, 0, 0, 0.08);
-            padding: 0;
-            position: relative;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.15);
         }
 
         @media print {
-            body {
-                padding: 0;
-                font-size: 11.5px;
-                background: #fff;
+            html {
+                background: none;
             }
 
             .page {
+                margin: 0;
+                min-height: 0;
                 box-shadow: none;
             }
-
-            .no-print {
-                display: none !important;
-            }
-
-            a {
-                color: inherit;
-                text-decoration: none;
-            }
         }
 
-        /* ─── HEADER ─── */
-        .header {
-            display: flex;
-            align-items: stretch;
-            background: #f7f7f7;
-            border-bottom: 3px solid #000;
-        }
-
-        .header-left {
-            flex: 1;
-            padding: 40px 36px 32px 42px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-
-        .header-left .first-name {
-            font-size: 18px;
-            font-weight: 900;
-            letter-spacing: 3px;
-            text-transform: uppercase;
-            color: #000;
-        }
-
-        .header-left .last-name {
-            font-size: 38px;
-            font-weight: 900;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            line-height: 1.1;
-            margin-top: 2px;
-        }
-
-        .header-left .title-line {
-            font-size: 13px;
-            font-weight: 400;
-            letter-spacing: 5px;
-            text-transform: uppercase;
-            color: #777;
-            margin-top: 8px;
-        }
-
-        .header-right {
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            gap: 16px;
-            padding-right: 36px;
-        }
-
-        .contact-strip {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            gap: 10px;
-            padding: 20px 24px 20px 0;
-            align-items: flex-end;
-        }
-
-        .contact-item {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 12px;
-            color: #444;
-        }
-
-        .contact-item .icon {
-            width: 26px;
-            height: 26px;
-            background: #000;
-            color: #fff;
-            border-radius: 3px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            font-size: 10px;
-            flex-shrink: 0;
-        }
-
-        .header-photo {
-            width: 145px;
-            height: 145px;
-            object-fit: cover;
-            display: block;
-            border-radius: 2px;
-            flex-shrink: 0;
-        }
-
-        .contact-item a {
-            color: #444;
+        a {
+            color: inherit;
             text-decoration: none;
         }
 
-        /* ─── TWO-COLUMN LAYOUT ─── */
-        .content {
-            display: flex;
-            min-height: 700px;
+        strong {
+            font-weight: 700;
         }
 
-        .main-col {
-            flex: 1;
-            padding: 24px 28px 32px 36px;
-            border-right: 1px solid #e5e5e5;
+        /* Header */
+        header {
+            text-align: center;
+            margin-bottom: 5.5pt;
         }
 
-        .side-col {
-            width: 260px;
-            padding: 24px 36px 32px 24px;
-            flex-shrink: 0;
+        h1 {
+            font-size: 24.2pt;
+            font-weight: 700;
+            line-height: 1;
+            margin-bottom: 3pt;
         }
 
-        /* ─── SECTION TITLES ─── */
-        .section {
-            margin-bottom: 20px;
+        .contact,
+        .tagline {
+            font-size: 10pt;
         }
 
-        .section-title {
-            font-size: 14px;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            color: #000;
-            padding-bottom: 6px;
-            margin-bottom: 12px;
-            position: relative;
+        .contact .sep {
+            margin: 0 0.25em;
         }
 
-        .section-title::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 50px;
-            height: 2px;
-            background: #000;
+        .tagline {
+            margin-top: 2pt;
         }
 
-        /* Side column section titles */
-        .side-col .section-title {
-            font-size: 13px;
+        /* Sections: small-caps heading over a full-width rule */
+        section {
+            margin-top: 6.5pt;
         }
 
-        .side-col .section-title::after {
-            width: 40px;
+        h2 {
+            font-size: 12pt;
+            font-weight: 500;
+            font-variant: small-caps;
+            letter-spacing: 0.02em;
+            border-bottom: 0.8pt solid #000;
+            padding-bottom: 1pt;
+            margin-bottom: 4pt;
         }
 
-        /* ─── ENTRIES ─── */
+        /* Entries: bold title / right-aligned date, italic role / location */
         .entry {
-            margin-bottom: 14px;
+            padding: 0 0.08in 0 0.15in;
         }
 
-        .entry-header {
+        .entry+.entry {
+            margin-top: 1.5pt;
+        }
+
+        .row {
             display: flex;
             justify-content: space-between;
             align-items: baseline;
-            gap: 8px;
+            gap: 1em;
         }
 
-        .entry-title {
-            font-weight: 700;
-            font-size: 13px;
-            color: #000;
+        .row>:last-child {
+            flex-shrink: 0;
         }
 
-        .entry-subtitle {
-            font-weight: 500;
-            color: #555;
-            font-size: 12px;
-            margin-top: 1px;
-        }
-
-        .entry-period {
-            font-size: 11px;
-            color: #888;
-            font-weight: 500;
-            white-space: nowrap;
-        }
-
-        .entry-desc {
-            margin-top: 4px;
-            color: #444;
-            font-size: 12px;
-        }
-
-        /* ─── LISTS ─── */
-        ul {
-            padding-left: 16px;
-            margin-top: 4px;
-        }
-
-        ul li {
-            margin-bottom: 3px;
-            color: #444;
-            font-size: 12px;
-        }
-
-        ul li::marker {
-            color: #bbb;
-        }
-
-        /* ─── SKILLS (sidebar) ─── */
-        .skill-group {
-            margin-bottom: 12px;
-        }
-
-        .skill-group-title {
-            font-weight: 700;
-            font-size: 11.5px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            color: #000;
-            margin-bottom: 4px;
-        }
-
-        .skill-list {
-            list-style: disc;
-            padding-left: 16px;
-        }
-
-        .skill-list li {
-            color: #555;
-            font-size: 11.5px;
-            margin-bottom: 2px;
-        }
-
-        .skill-list li::marker {
-            color: #ccc;
-        }
-
-        /* ─── TAGS ─── */
-        .tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 4px;
-            margin-top: 5px;
-        }
-
-        .tag {
-            background: #f0f0f0;
-            padding: 2px 8px;
-            border-radius: 3px;
-            font-size: 10px;
-            color: #555;
-            font-weight: 500;
-        }
-
-        /* ─── CP SIDEBAR ─── */
-        .cp-item {
-            margin-bottom: 8px;
-        }
-
-        .cp-platform {
-            font-weight: 700;
-            font-size: 12px;
-            color: #000;
-        }
-
-        .cp-detail {
-            font-size: 11px;
-            color: #555;
-        }
-
-        /* ─── EDUCATION SIDEBAR ─── */
-        .edu-entry {
-            margin-bottom: 12px;
-        }
-
-        .edu-title {
-            font-weight: 700;
-            font-size: 12px;
-            color: #000;
-        }
-
-        .edu-sub {
-            font-size: 11px;
-            color: #555;
-        }
-
-        .edu-period {
-            font-size: 10.5px;
-            color: #999;
-        }
-
-        /* ─── SUMMARY ─── */
-        .summary-text {
-            color: #444;
-            font-size: 12px;
-            line-height: 1.65;
+        .sub {
+            font-size: 10pt;
             font-style: italic;
         }
 
-        /* ─── LANGUAGES ─── */
-        .lang-item {
-            display: flex;
-            justify-content: space-between;
-            font-size: 11.5px;
-            margin-bottom: 3px;
+        .project {
+            font-size: 10pt;
         }
 
-        .lang-item .lang-name {
-            font-weight: 500;
-            color: #333;
+        .project .sep {
+            margin: 0 0.2em;
         }
 
-        .lang-item .lang-level {
-            color: #888;
+        /* Bullets run to the rule's end; dates stop 0.08in short of it (as in LaTeX). */
+        ul {
+            list-style: none;
+            font-size: 10pt;
+            margin-right: -0.08in;
+            /* TeX squeezes interword space a little to fit a line; browsers don't. */
+            word-spacing: -0.05em;
         }
 
-        /* ─── PRINT BUTTON ─── */
-        .print-btn {
-            position: fixed;
-            bottom: 24px;
-            right: 24px;
-            background: #000;
-            color: #fff;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-family: 'Inter', sans-serif;
-            font-weight: 700;
-            font-size: 13px;
-            z-index: 100;
+        li {
+            position: relative;
+            padding-left: 0.2in;
         }
 
-        .print-btn:hover {
-            background: #333;
+        .nobr {
+            white-space: nowrap;
+        }
+
+        li::before {
+            content: "•";
+            position: absolute;
+            left: 0.06in;
+        }
+
+        .projects .entry+.entry {
+            margin-top: 5pt;
+        }
+
+        /* Certifications */
+        .certs p {
+            padding: 0 0.08in 0 0.15in;
+            font-size: 10pt;
+        }
+
+        .certs p+p {
+            margin-top: 5.5pt;
+        }
+
+        /* Technical skills */
+        .skills p {
+            padding: 0 0.08in 0 0.15in;
+            font-size: 10pt;
         }
     </style>
 </head>
 
 <body>
+    <main class="page">
+        <header>
+            <h1>B Shiva Sai Patro</h1>
+            <p class="contact">
+                <a href="mailto:bshivasaipatro@gmail.com">bshivasaipatro@gmail.com</a><span class="sep">|</span><a
+                    href="https://github.com/Shiva-Sai-369">github.com/Shiva-Sai-369</a><span class="sep">|</span><a
+                    href="https://linkedin.com/in/b-shiva-sai-patro">linkedin.com/in/b-shiva-sai-patro</a><span
+                    class="sep">|</span>Hyderabad, India
+            </p>
+            <p class="tagline">3rd-year CSE student who loves building full-stack and AI-powered web applications.</p>
+        </header>
 
-    <div class="page">
-
-        <!-- ═══ HEADER ═══ -->
-        <div class="header">
-            <div class="header-left">
-                <div class="first-name"></div>
-                <div class="last-name">B Shiva Sai Patro</div>
-                <div class="title-line">Software Developer</div>
+        <section>
+            <h2>Education</h2>
+            <div class="entry">
+                <div class="row"><strong>KL University (Koneru Lakshmaiah Education Foundation)</strong><span>Expected: May
+                        2028</span></div>
+                <div class="row sub"><span>B.Tech in Computer Science and Engineering | CGPA: 9.01/10</span><span>Jul. 2024 –
+                        Present</span></div>
             </div>
-            <div class="header-right">
-                <div class="contact-strip">
-                    <div class="contact-item">
-                        <span>bshivasaip@gmail.com</span>
-                        <span class="icon">@</span>
-                    </div>
-                    <div class="contact-item">
-                        <a href="https://github.com/Shiva-Sai-369" target="_blank">github.com/Shiva-Sai-369</a>
-                        <span class="icon">G</span>
-                    </div>
-                    <div class="contact-item">
-                        <a href="https://www.linkedin.com/in/b-shiva-sai-patro-126aa3318/" target="_blank">LinkedIn</a>
-                        <span class="icon">in</span>
-                    </div>
-                    <div class="contact-item">
-                        <span>Hyderabad, India</span>
-                        <span class="icon">📍</span>
-                    </div>
-                </div>
-                <img src="/profile.jpeg" alt="Shiva Sai Patro" class="header-photo" />
+        </section>
+
+        <section>
+            <h2>Work Experience</h2>
+            <div class="entry">
+                <div class="row"><strong>Web Rocket Tech Pvt. Ltd.</strong><span>Jun. 2026 – Present</span></div>
+                <div class="row sub"><span>Product Development &amp; AI Intern</span><span>Hyderabad, India</span></div>
+                <ul>
+                    <li>Architected a full-stack CRM platform (Next.js, TypeScript, Supabase/PostgreSQL) with a three-tier
+                        role hierarchy (super_admin/admin/worker) and a Google Sheets-to-Supabase sync pipeline, integrating
+                        with a production <span class="nobr">lead-management</span> tool’s existing schema.</li>
+                    <li>Built real-time lead management features – inline editing, timestamped notes history, and Supabase
+                        Realtime subscriptions – enabling live, multi-user data updates across the sales workflow.</li>
+                    <li>Designed and shipped conversion-focused landing pages for multiple client brands (Better Castings,
+                        Extended Learning, Grammar Workout), including a Next.js build used as a design reference for
+                        WordPress conversion.</li>
+                </ul>
             </div>
-        </div>
-
-        <!-- ═══ CONTENT ═══ -->
-        <div class="content">
-
-            <!-- ─── MAIN COLUMN ─── -->
-            <div class="main-col">
-
-                <!-- Summary -->
-                <div class="section">
-                    <div class="section-title">Summary</div>
-                    <p class="summary-text">
-                        Passionate Computer Science undergraduate with strong foundations in algorithms, data
-                        structures, and
-                        full-stack development. 555+ GitHub contributions in the past year across AI-powered
-                        applications,
-                        media platforms, and campus management systems. HACK4SDG Finalist at IIT Hyderabad with a proven
-                        track record in competitive programming on LeetCode, Codeforces, and CodeChef. Driven by a
-                        vision to
-                        build impactful, production-quality software and contribute meaningfully to open-source.
-                        Currently
-                        exploring AI integration, system design, and scalable web architectures.
-                    </p>
-                </div>
-
-                <!-- Experience -->
-                <div class="section">
-                    <div class="section-title">Experience</div>
-
-                    <div class="entry">
-                        <div class="entry-header">
-                            <div class="entry-title">Growth &amp; User Operations</div>
-                            <div class="entry-period">Sep 2026 — Present</div>
-                        </div>
-                        <div class="entry-subtitle">Niera · Full-time · Hyderabad (Remote)</div>
-                    </div>
-
-                    <div class="entry">
-                        <div class="entry-header">
-                            <div class="entry-title">Product Development &amp; AI Intern</div>
-                            <div class="entry-period">Jun 2026 — Sep 2026</div>
-                        </div>
-                        <div class="entry-subtitle">Web Rocket Tech · Internship · Hyderabad (On-site)</div>
-                        <ul>
-                            <li>Designed and developed high-fidelity, conversion-focused landing pages with brand consistency</li>
-                            <li>Built and shipped internal/product tools</li>
-                            <li>Assisted in product research, requirement gathering, and QA testing</li>
-                            <li>Translated design concepts into functional, responsive interfaces</li>
-                        </ul>
-                    </div>
-
-                    <div class="entry">
-                        <div class="entry-header">
-                            <div class="entry-title">Graphic Designer</div>
-                            <div class="entry-period">Jun 2024 — Jul 2026</div>
-                        </div>
-                        <div class="entry-subtitle">Aiforkids · Full-time · Secunderabad</div>
-                        <ul>
-                            <li>Designed visual content (thumbnails, illustrations, social graphics) for a young audience</li>
-                            <li>Maintained consistent visual identity across brand touchpoints</li>
-                            <li>Delivered multiple design assets per week under tight turnaround</li>
-                            <li>Adapted designs based on feedback cycles with content teams</li>
-                        </ul>
-                    </div>
-
-                    <div class="entry">
-                        <div class="entry-header">
-                            <div class="entry-title">Web Content Writer</div>
-                            <div class="entry-period">May 2025 — Jul 2025</div>
-                        </div>
-                        <div class="entry-subtitle">WieDigital · Hybrid</div>
-                        <ul>
-                            <li>Produced SEO-optimized web content, improving organic search visibility</li>
-                            <li>Managed and published content on WordPress across multiple client projects</li>
-                            <li>Applied on-page SEO techniques (meta tags, keyword placement, internal linking)</li>
-                            <li>Collaborated with design/marketing teams on campaign-aligned content</li>
-                        </ul>
-                    </div>
-                </div>
-
-                <!-- Projects -->
-                <div class="section">
-                    <div class="section-title">Projects</div>
-
-                    <div class="entry">
-                        <div class="entry-header">
-                            <div class="entry-title">EduSync — AI-Powered Campus Management</div>
-                            <div class="entry-period">
-                                <a href="https://github.com/Shiva-Sai-369/edusync" target="_blank">GitHub ↗</a>
-                            </div>
-                        </div>
-                        <div class="entry-subtitle">Google TechSprint 2025</div>
-                        <ul>
-                            <li>Designed AI-based attendance system with intelligent recognition, reducing manual
-                                tracking by 90%</li>
-                            <li>Built optimized room allocation algorithm improving campus scheduling efficiency</li>
-                            <li>Developed collaborative community platform for 500+ students and faculty</li>
-                        </ul>
-                        <div class="tags">
-                            <span class="tag">TypeScript</span>
-                            <span class="tag">AI</span>
-                            <span class="tag">Full Stack</span>
-                        </div>
-                    </div>
-
-                    <div class="entry">
-                        <div class="entry-header">
-                            <div class="entry-title">Clari AI Meeting Assistant</div>
-                            <div class="entry-period">
-                                <a href="https://github.com/Shiva-Sai-369/Clari-Ai-Meeting_Assistant"
-                                    target="_blank">GitHub ↗</a>
-                            </div>
-                        </div>
-                        <div class="entry-subtitle">AI Productivity Tool</div>
-                        <ul>
-                            <li>Engineered automated meeting transcription and summarization pipeline using AI</li>
-                            <li>Implemented action item extraction and intelligent task assignment from meeting notes
-                            </li>
-                            <li>Focused on productivity enhancement through seamless AI integration</li>
-                        </ul>
-                        <div class="tags">
-                            <span class="tag">TypeScript</span>
-                            <span class="tag">AI Integration</span>
-                        </div>
-                    </div>
-
-                    <div class="entry">
-                        <div class="entry-header">
-                            <div class="entry-title">Raspiflix — Media Streaming Platform</div>
-                            <div class="entry-period">
-                                <a href="https://github.com/Shiva-Sai-369/Raspiflix" target="_blank">GitHub ↗</a>
-                            </div>
-                        </div>
-                        <div class="entry-subtitle">Embedded Entertainment System</div>
-                        <ul>
-                            <li>Built Netflix-inspired streaming UI with movie browsing, search, and carousel features
-                            </li>
-                            <li>Developed custom media player with responsive design optimized for Raspberry Pi</li>
-                            <li>Engineered for low-resource embedded hardware with smooth performance</li>
-                        </ul>
-                        <div class="tags">
-                            <span class="tag">JavaScript</span>
-                            <span class="tag">HTML</span>
-                            <span class="tag">CSS</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Competitive Programming -->
-                <div class="section">
-                    <div class="section-title">Competitive Programming</div>
-                    <ul>
-                        <li><strong>LeetCode</strong> (@Sh1vz) — 214 problems solved (Easy: 156, Medium: 53, Hard: 5),
-                            contest rating 1501, top 44.28% globally
-                        </li>
-                        <li><strong>Codeforces</strong> (@sh1vz) — Rating: 1006 (Newbie), 90 problems solved
-                        </li>
-                        <li><strong>CodeChef</strong> (@shivs2006) — Max Rating: 1427 (2★), 2500+ problems solved
-                        </li>
-                    </ul>
-                </div>
-
-                <!-- Achievements -->
-                <div class="section">
-                    <div class="section-title">Achievements</div>
-                    <ul>
-                        <li><strong>HACK4SDG Finalist</strong> — IIT Hyderabad (2024). Built innovative solutions for
-                            Sustainable Development Goals.</li>
-                        <li><strong>Google TechSprint 2025</strong> — EduSync selected as AI-Powered Campus Management
-                            System for the program.</li>
-                        <li><strong>555+ GitHub Contributions</strong> — Active open-source contributor across 8+ public
-                            repositories.</li>
-                    </ul>
-                </div>
-
+            <div class="entry">
+                <div class="row"><strong>WieLearn / CookWithFem</strong><span>Mar. 2025 – Jul. 2025</span></div>
+                <div class="row sub"><span>Content Operations Intern</span><span>Remote</span></div>
+                <ul>
+                    <li>Published 150+ SEO-optimized blog articles and built a 500+ answer Q&amp;A content system for a
+                        cooking platform reaching 3M+ monthly users, driving a 40% increase in organic search traffic.</li>
+                </ul>
             </div>
-
-            <!-- ─── SIDEBAR ─── -->
-            <div class="side-col">
-
-                <!-- Education -->
-                <div class="section">
-                    <div class="section-title">Education</div>
-
-                    <div class="edu-entry">
-                        <div class="edu-title">B.Tech in Computer Science<br>& Engineering</div>
-                        <div class="edu-sub">KL University, Hyderabad</div>
-                        <div class="edu-period">2024 — 2028</div>
-                    </div>
-
-                    <div class="edu-entry">
-                        <div class="edu-title">Intermediate (11th & 12th)</div>
-                        <div class="edu-sub">Resonance, Hyderabad</div>
-                        <div class="edu-period">2022 — 2024</div>
-                    </div>
-
-                    <div class="edu-entry">
-                        <div class="edu-title">Schooling (1st — 10th)</div>
-                        <div class="edu-sub">Kendriya Vidyalaya, Picket</div>
-                        <div class="edu-period">2012 — 2022</div>
-                    </div>
-                </div>
-
-                <!-- Skills -->
-                <div class="section">
-                    <div class="section-title">Skills</div>
-
-                    <div class="skill-group">
-                        <div class="skill-group-title">Technical</div>
-                        <ul class="skill-list">
-                            <li>C / C++ / Java / Python</li>
-                            <li>JavaScript & TypeScript</li>
-                            <li>React & Node.js</li>
-                            <li>Data Structures & Algorithms</li>
-                            <li>AI Integration</li>
-                            <li>System Design</li>
-                        </ul>
-                    </div>
-
-                    <div class="skill-group">
-                        <div class="skill-group-title">Professional</div>
-                        <ul class="skill-list">
-                            <li>Problem Solving</li>
-                            <li>Team Collaboration</li>
-                            <li>Agile Development</li>
-                            <li>Blog Writing & Content</li>
-                            <li>SEO Optimization</li>
-                            <li>Open Source Contribution</li>
-                        </ul>
-                    </div>
-                </div>
-
-                <!-- Tools & Databases -->
-                <div class="section">
-                    <div class="section-title">Tools</div>
-                    <ul class="skill-list">
-                        <li>Git & GitHub</li>
-                        <li>MySQL / Firebase / Supabase</li>
-                        <li>Linux & VS Code</li>
-                        <li>Figma & Canva</li>
-                        <li>Tailwind CSS & WordPress</li>
-                    </ul>
-                </div>
-
-                <!-- Languages -->
-                <div class="section">
-                    <div class="section-title">Languages</div>
-                    <div class="lang-item">
-                        <span class="lang-name">English</span>
-                        <span class="lang-level">Fluent</span>
-                    </div>
-                    <div class="lang-item">
-                        <span class="lang-name">Hindi</span>
-                        <span class="lang-level">Native</span>
-                    </div>
-                    <div class="lang-item">
-                        <span class="lang-name">Telugu</span>
-                        <span class="lang-level">Native</span>
-                    </div>
-                </div>
-
-                <!-- Interests -->
-                <div class="section">
-                    <div class="section-title">Interests</div>
-                    <ul class="skill-list">
-                        <li>AI & Machine Learning</li>
-                        <li>Competitive Programming</li>
-                        <li>Open Source</li>
-                        <li>UI/UX Design</li>
-                        <li>System Architecture</li>
-                    </ul>
-                </div>
-
+            <div class="entry">
+                <div class="row"><strong>Aiforkids</strong><span>Jun. 2024 – Dec. 2024</span></div>
+                <div class="row sub"><span>Graphic Designer</span><span>Secunderabad, India</span></div>
+                <ul>
+                    <li>Designed 20+ educational graphics weekly for an AI learning platform’s social channels serving
+                        5,000+ students.</li>
+                </ul>
             </div>
+        </section>
 
-        </div><!-- /content -->
+        <section class="projects">
+            <h2>Projects</h2>
+            <div class="entry">
+                <div class="row project"><span><strong>Clari</strong><span class="sep">|</span>AI Meeting Assistant<span
+                            class="sep">|</span>React, TypeScript, Tailwind CSS, OpenAI Whisper<span class="sep">|</span><a
+                            href="https://github.com/Shiva-Sai-369/Clari-Ai-Meeting_Assistant">GitHub</a></span><span>2025</span>
+                </div>
+                <ul>
+                    <li>Built a real-time meeting assistant with OpenAI Whisper API for speech-to-text transcription
+                        supporting 99+ languages, speaker diarization, and multiple export formats (JSON, SRT, VTT).</li>
+                    <li>Implemented optimized audio pipeline (16kHz, mono, noise suppression) with live audio level
+                        monitoring; deployed via Lovable with a responsive shadcn/ui interface.</li>
+                </ul>
+            </div>
+            <div class="entry">
+                <div class="row project"><span><strong>Ramirez</strong><span class="sep">|</span>Multi-Agent Cybersecurity
+                        Defense System<span class="sep">|</span>Python, ML, Scapy<span class="sep">|</span><a
+                            href="https://github.com/Shiva-Sai-369/ramirez">GitHub</a></span><span>2025</span></div>
+                <ul>
+                    <li>Built a real-time defense system with 10 monitoring agents detecting network attacks, port scans,
+                        and kernel threats; implemented ML-based anomaly detection using Scapy for packet analysis.</li>
+                </ul>
+            </div>
+            <div class="entry">
+                <!-- No public repo yet: link "GitHub" once there is one. -->
+                <div class="row project"><span><strong>Heart Disease Prediction System</strong><span
+                            class="sep">|</span>Python, Flask, Machine Learning<span
+                            class="sep">|</span>GitHub</span><span>2025</span></div>
+                <ul>
+                    <li>Logistic Regression model with 89.13% accuracy on 918 patient records; deployed as a Flask web app
+                        with real-time risk assessment and color-coded results.</li>
+                </ul>
+            </div>
+        </section>
 
-    </div><!-- /page -->
+        <section class="certs">
+            <h2>Certifications</h2>
+            <p><strong>Red Hat Certified Specialist in Enterprise Application Development</strong> – Red Hat, May 2026
+                (Valid till May 2029)</p>
+            <p><strong>Building Agentic AI Applications with LLMs</strong> – NVIDIA Deep Learning Institute, Feb. 2026</p>
+            <p><strong>Building LLM Applications with Prompt Engineering</strong> – NVIDIA Deep Learning Institute, Feb.
+                2026</p>
+            <p><strong>Adding Knowledge to LLMs</strong> – NVIDIA Deep Learning Institute, Jan. 2026</p>
+        </section>
 
-    <button class="print-btn no-print" onclick="window.print()">🖨️ Print / Save as PDF</button>
-
+        <section class="skills">
+            <h2>Technical Skills</h2>
+            <p><strong>Languages</strong>: Python, JavaScript, TypeScript, C++, Java, C</p>
+            <p><strong>Web Development</strong>: React, Node.js, Flask, Tailwind CSS, shadcn/ui, REST APIs, Vite</p>
+            <p><strong>Databases &amp; Tools</strong>: MySQL, Firebase, Supabase, Git, GitHub, Linux, Figma, Canva</p>
+        </section>
+    </main>
 </body>
 
 </html>
