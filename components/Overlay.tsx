@@ -1043,6 +1043,8 @@ const Overlay: React.FC = () => {
               <img
                 src="https://ghchart.rshah.org/00a5e0/Shiva-Sai-369"
                 alt="GitHub Contribution Heatmap"
+                width={663}
+                height={104}
                 className="w-full min-w-[700px] invert opacity-90"
               />
             </div>
