@@ -12,6 +12,9 @@ dist
 dist-ssr
 *.local
 
+# Raw screen recordings (scripts/capture-*.ts); the README assets live in docs/
+captures/
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
